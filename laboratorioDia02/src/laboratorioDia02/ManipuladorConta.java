@@ -64,7 +64,14 @@ public class ManipuladorConta implements Subject{
 		LocalDate dataAtual = LocalDate.now();
 		
 		for(Observador observer : this.observers){
-            observer.registraEvento(conta, valor, dataAtual, tipoMovimentacao);
+			if(observer instanceof Coaf) {
+				if(valor > 50000 ) { // falta verificar se é depósito
+					observer.registraEvento(conta, valor, dataAtual, tipoMovimentacao);
+					
+				}
+			} else {
+				observer.registraEvento(conta, valor, dataAtual, tipoMovimentacao);
+			}
         }		
 	}
 	
