@@ -12,7 +12,7 @@ public class Principal {
 		ManipuladorConta manipuladorConta = new ManipuladorConta();
 		manipuladorConta.registerObserver(extratoMovimentacoes);
 		
-		manipuladorConta.credita(conta1Cliente1, 50);
+		manipuladorConta.credita(conta1Cliente1, 1500);
 		
 		Cliente cliente2 = new Cliente();
 		cliente2.setNome("Tarcisio");
@@ -20,9 +20,12 @@ public class Principal {
 		Conta conta2Cliente2 = cliente2.getContas().get(0);
 		
 		try {
-			manipuladorConta.transfere(conta1Cliente1, conta2Cliente2, 20);
+			manipuladorConta.transfere(conta1Cliente1, conta2Cliente2, 1100);
 			
 			extratoMovimentacoes.imprimirExtrato(conta1Cliente1);
+			extratoMovimentacoes.imprimirExtrato(conta2Cliente2);
+			
+			manipuladorConta.saque(conta2Cliente2, 1001);
 			extratoMovimentacoes.imprimirExtrato(conta2Cliente2);
 			
 		}catch(Exception e) {

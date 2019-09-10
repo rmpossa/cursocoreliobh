@@ -1,6 +1,8 @@
 package laboratorioDia02;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.temporal.TemporalField;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,6 +29,16 @@ public class ManipuladorConta implements Subject{
 		conta.setSaldo(conta.getSaldo() + valor) ;
 		
 		notifyObservers(conta, valor, TipoMovimentacao.CREDITADO);
+	}
+	
+	public void saque(Conta conta, double valor) throws Exception{
+		LocalDateTime hora = LocalDateTime.now();
+		
+		if((hora.getHour() < 6 || hora.getHour() > 22) && valor > 1000.00) {
+			throw new Exception("Não é possível sacar mais de 1000 reais antes das 6h e depois das 22h.");
+		}
+		
+		debita(conta, valor);
 	}
 	
 	public void transfere(Conta contaDebitada, Conta contaCreditada, double valor) throws Exception{
