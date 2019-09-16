@@ -67,4 +67,8 @@ public class Cliente {
 		return saldoTotal;
 	}
 	
+	public String toString() {
+		return "Cliente: " + getNome() + " " + getSobrenome();
+	}
+	
 }
