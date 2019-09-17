@@ -2,17 +2,27 @@ package laboratorioDia02;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalField;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ManipuladorConta implements Subject{
+	
+	private Map<Conta,List<Movimentacao>> movimentacoesContas;
 	
 	private List<Observador> observers = new ArrayList<Observador>();
 	
 	public ManipuladorConta() {
-		
+		this.movimentacoesContas = new HashMap<Conta,List<Movimentacao>>();
 	}
+	
+	public List<Conta> obterContasCliente(Cliente cliente) {
+		return cliente.getContas();
+	}
+
 	
 //	public void debita(Conta conta, double valor) throws Exception{
 //		double saldoAtual = conta.getSaldo();
@@ -36,7 +46,7 @@ public class ManipuladorConta implements Subject{
 		}
 		conta.debita(valor) ;
 		
-		notifyObservers(conta, valor, TipoMovimentacao.DEBITADO);
+		registraMovimentacao(conta, valor, TipoMovimentacao.DEBITADO);
 	}
 	
 //	public void credita(Conta conta, double valor) {
@@ -48,7 +58,7 @@ public class ManipuladorConta implements Subject{
 	public void depositar(Conta conta, double valor) {
 		conta.credita(valor) ;
 		
-		notifyObservers(conta, valor, TipoMovimentacao.CREDITADO);
+		registraMovimentacao(conta, valor, TipoMovimentacao.CREDITADO);
 	}
 	
 //	public void saque(Conta conta, double valor) throws Exception{
@@ -65,8 +75,9 @@ public class ManipuladorConta implements Subject{
 	    double saldoContaOrigem = contaOrigem.getSaldo();
 	    double saldoContaDestino = contaDestino.getSaldo();
 		transferenciaStrategy.transfere(contaOrigem, contaDestino, valor);
-		notifyObservers(contaOrigem, saldoContaOrigem - contaOrigem.getSaldo(), TipoMovimentacao.DEBITADO);
-		notifyObservers(contaDestino, contaDestino.getSaldo() - saldoContaDestino, TipoMovimentacao.CREDITADO);
+		
+		registraMovimentacao(contaOrigem, saldoContaOrigem - contaOrigem.getSaldo(), TipoMovimentacao.DEBITADO);
+		registraMovimentacao(contaDestino, contaDestino.getSaldo() - saldoContaDestino, TipoMovimentacao.CREDITADO);
 	}
 	
 	@Override
@@ -84,11 +95,38 @@ public class ManipuladorConta implements Subject{
 					observer.registraEvento(conta, valor, dataAtual, tipoMovimentacao);
 					
 				}
-			} else {
-				observer.registraEvento(conta, valor, dataAtual, tipoMovimentacao);
-			}
+			} 
         }		
 	}
+	
+	public void registraMovimentacao(Conta conta, double valor, TipoMovimentacao tipoMovimentacao) {
+		
+		LocalDate dataAtual = LocalDate.now();
+		
+		Movimentacao movimentacao = new Movimentacao();
+		movimentacao.setConta(conta);
+		movimentacao.setData(dataAtual);
+		movimentacao.setValor(valor);
+		movimentacao.setTipoMovimentacao(tipoMovimentacao);
+		
+		if(!movimentacoesContas.containsKey(conta)) {
+			movimentacoesContas.put(conta, new ArrayList<Movimentacao>());
+		}
+		
+		List<Movimentacao> movimentacoesContaEspecifica = movimentacoesContas.get(conta);
+		movimentacoesContaEspecifica.add(movimentacao);
+		
+	}
+	
+	public void imprimirExtrato(Conta conta) {
+		List<Movimentacao> movimentacoesContaEspecifica = movimentacoesContas.get(conta);
+		
+		System.out.println("Conta Id: " + conta.getId());
+		
+		movimentacoesContaEspecifica.forEach(
+				m -> System.out.println("Data: " + m.getData().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) + " ; Tipo Movimentacao: " + m.getTipoMovimentacao() +" ; Valor: " + m.getValor()));	
+	}
+	
 	
 	
 }

@@ -2,11 +2,12 @@ package laboratorioDia02;
 
 public class Conta {
 	private String id;
-	private Double saldo = 0.0;
+	private Double saldo;
 	private Cliente cliente;
 	
-	public Conta(Cliente cliente) {
-		this.cliente = cliente;
+	public Conta(String id, double saldoInicial) {
+		this.id = id;
+		this.saldo = saldoInicial;
 	}
 	
 	public String getId() {

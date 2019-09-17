@@ -3,8 +3,8 @@ package laboratorioDia02;
 public class ContaInvestimento extends Conta{
 	private TipoAplicacao tipoAplicacao;
 	
-	public ContaInvestimento(TipoAplicacao tipoAplicacao, Cliente cliente) {
-		super(cliente);
+	public ContaInvestimento(String id, double saldoInicial, TipoAplicacao tipoAplicacao) {
+		super(id, saldoInicial);
 		this.tipoAplicacao = tipoAplicacao;
 	}
 	
