@@ -12,12 +12,15 @@ public class Conta {
 	public String getId() {
 		return id;
 	}
+	
 	public void setId(String id) {
 		this.id = id;
 	}
+	
 	public Double getSaldo() {
 		return saldo;
 	}
+	
 	public void setSaldo(Double saldo) {
 		this.saldo = saldo;
 	}
@@ -30,6 +33,12 @@ public class Conta {
 		this.cliente = cliente;
 	}
 	
+	public void debita(double valor) {
+		this.saldo -= valor;
+	}
 	
+	public void credita(double valor) {
+		this.saldo += valor;
+	}
 	
 }
