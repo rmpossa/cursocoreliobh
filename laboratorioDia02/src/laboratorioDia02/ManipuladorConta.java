@@ -46,7 +46,8 @@ public class ManipuladorConta implements Subject{
 		}
 		conta.debita(valor) ;
 		
-		registraMovimentacao(conta, valor, TipoMovimentacao.DEBITADO);
+		registraMovimentacao(conta, valor, TipoOperacao.SAQUE);
+		notifyObservers(conta, valor, TipoOperacao.SAQUE);
 	}
 	
 //	public void credita(Conta conta, double valor) {
@@ -58,8 +59,8 @@ public class ManipuladorConta implements Subject{
 	public void depositar(Conta conta, double valor) {
 		conta.credita(valor) ;
 		
-		registraMovimentacao(conta, valor, TipoMovimentacao.CREDITADO);
-		notifyObservers(conta, valor, TipoMovimentacao.CREDITADO);
+		registraMovimentacao(conta, valor, TipoOperacao.DEPOSITO);
+		notifyObservers(conta, valor, TipoOperacao.DEPOSITO);
 	}
 	
 //	public void saque(Conta conta, double valor) throws Exception{
@@ -77,8 +78,12 @@ public class ManipuladorConta implements Subject{
 	    double saldoContaDestino = contaDestino.getSaldo();
 		transferenciaStrategy.transfere(contaOrigem, contaDestino, valor);
 		
-		registraMovimentacao(contaOrigem, saldoContaOrigem - contaOrigem.getSaldo(), TipoMovimentacao.DEBITADO);
-		registraMovimentacao(contaDestino, contaDestino.getSaldo() - saldoContaDestino, TipoMovimentacao.CREDITADO);
+		
+		registraMovimentacao(contaOrigem, saldoContaOrigem - contaOrigem.getSaldo(), TipoOperacao.TRANSFERENCIA_ORIGEM);
+		registraMovimentacao(contaDestino, contaDestino.getSaldo() - saldoContaDestino, TipoOperacao.TRANSFERENCIA_DESTINO);
+		
+		notifyObservers(contaOrigem, saldoContaOrigem - contaOrigem.getSaldo(), TipoOperacao.TRANSFERENCIA_ORIGEM);
+		notifyObservers(contaDestino, contaDestino.getSaldo() - saldoContaDestino, TipoOperacao.TRANSFERENCIA_DESTINO);
 	}
 	
 	@Override
@@ -87,20 +92,22 @@ public class ManipuladorConta implements Subject{
     }
 
 	@Override
-	public void notifyObservers(Conta conta, double valor, TipoMovimentacao tipoMovimentacao) {
+	public void notifyObservers(Conta conta, double valor, TipoOperacao tipoOperacao) {
 		LocalDate dataAtual = LocalDate.now();
 		
 		for(Observador observer : this.observers){
 			if(observer instanceof Coaf) {
 				if(valor > 50000 ) { // falta verificar se é depósito
-					observer.registraEvento(conta, valor, dataAtual, tipoMovimentacao);
+					observer.registraEvento(conta, valor, dataAtual, tipoOperacao);
 					
 				}
-			} 
+			} else {
+				observer.registraEvento(conta, valor, dataAtual, tipoOperacao);
+			}
         }		
 	}
 	
-	public void registraMovimentacao(Conta conta, double valor, TipoMovimentacao tipoMovimentacao) {
+	public void registraMovimentacao(Conta conta, double valor, TipoOperacao tipoOperacao) {
 		
 		LocalDate dataAtual = LocalDate.now();
 		
@@ -108,7 +115,7 @@ public class ManipuladorConta implements Subject{
 		movimentacao.setConta(conta);
 		movimentacao.setData(dataAtual);
 		movimentacao.setValor(valor);
-		movimentacao.setTipoMovimentacao(tipoMovimentacao);
+		movimentacao.setTipoOperacao(tipoOperacao);
 		
 		if(!movimentacoesContas.containsKey(conta)) {
 			movimentacoesContas.put(conta, new ArrayList<Movimentacao>());
@@ -125,7 +132,7 @@ public class ManipuladorConta implements Subject{
 		System.out.println("Conta Id: " + conta.getId());
 		
 		movimentacoesContaEspecifica.forEach(
-				m -> System.out.println("Data: " + m.getData().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) + " ; Tipo Movimentacao: " + m.getTipoMovimentacao() +" ; Valor: " + m.getValor()));	
+				m -> System.out.println("Data: " + m.getData().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) + " ; Tipo Operação: " + m.getTipoOperacao() +" ; Valor: " + m.getValor()));	
 	}
 	
 	

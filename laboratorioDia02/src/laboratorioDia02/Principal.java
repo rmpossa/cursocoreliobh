@@ -16,6 +16,7 @@ public class Principal {
 		
 		ManipuladorConta manipuladorConta = new ManipuladorConta();
 		manipuladorConta.registerObserver(Coaf.getInstance());
+		manipuladorConta.registerObserver(PortifolioObserver.getInstance());
 		
 		manipuladorConta.depositar(conta1Cliente1, 51000.0);
 		

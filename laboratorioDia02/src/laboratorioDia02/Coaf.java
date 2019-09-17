@@ -44,7 +44,7 @@ public class Coaf implements Observador{
     }
 
 	@Override
-	public void registraEvento(Conta conta, double valor, LocalDate data, TipoMovimentacao tipoMovimentacao) {
+	public void registraEvento(Conta conta, double valor, LocalDate data, TipoOperacao tipoOperacao) {
 		System.out.println("COAF notificado");
 
         // Criando o HttpClient

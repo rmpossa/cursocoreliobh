@@ -3,17 +3,12 @@ package laboratorioDia02;
 import java.time.LocalDate;
 
 public class Movimentacao {
-	private TipoMovimentacao tipoMovimentacao;
+	private TipoOperacao tipoOperacao;
 	private Conta conta;
 	private double valor;
 	private LocalDate data;
 	
-	public TipoMovimentacao getTipoMovimentacao() {
-		return tipoMovimentacao;
-	}
-	public void setTipoMovimentacao(TipoMovimentacao tipoMovimentacao) {
-		this.tipoMovimentacao = tipoMovimentacao;
-	}
+	
 	public Conta getConta() {
 		return conta;
 	}
@@ -32,6 +27,14 @@ public class Movimentacao {
 	public void setData(LocalDate data) {
 		this.data = data;
 	}
+	public TipoOperacao getTipoOperacao() {
+		return tipoOperacao;
+	}
+	public void setTipoOperacao(TipoOperacao tipoOperacao) {
+		this.tipoOperacao = tipoOperacao;
+	}
+	
+	
 	
 	
 	
