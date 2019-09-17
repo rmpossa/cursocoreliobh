@@ -61,6 +61,15 @@ public class Cliente {
 		
 		return this;
 	}
+	
+	public Conta getConta(String id) {
+		for (Conta c:contas) {
+			if (c.getId().equals(id)) {
+				return c;
+			}
+		}
+		return null;
+	}
 
 	public String getNome() {
 		return nome;

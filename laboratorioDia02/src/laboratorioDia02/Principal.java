@@ -11,11 +11,13 @@ public class Principal {
 		ClienteAdapter clienteAdapter = new ClienteAdapterImpl(cliente1);
 		System.out.println(clienteAdapter.getNomeClientePadrao());
 		System.out.println("Endereco: " + cliente1.getEndereco() + "; Telefone: " + cliente1.getTelefone());
-		Conta conta1Cliente1 = cliente1.getContas().get(0);
+//		Conta conta1Cliente1 = cliente1.getContas().get(0);
+		Conta conta1Cliente1 = cliente1.getConta("1");
 		
 		ManipuladorConta manipuladorConta = new ManipuladorConta();
+		manipuladorConta.registerObserver(Coaf.getInstance());
 		
-		manipuladorConta.depositar(conta1Cliente1, 1500);
+		manipuladorConta.depositar(conta1Cliente1, 51000.0);
 		
 		Cliente cliente2 = new Cliente.ClienteBuilder("Tarcísio", "Brandão")
 			.setEndereco("Av xyz, 123 - B. abc")
@@ -27,7 +29,8 @@ public class Principal {
 		System.out.println(clienteAdapter.getNomeClienteFormatoAmericano());
 		System.out.println("Endereco: " + cliente2.getEndereco() + "; Telefone: " + cliente2.getTelefone());
 		
-		Conta conta2Cliente2 = cliente2.getContas().get(0);
+//		Conta conta2Cliente2 = cliente2.getContas().get(0);
+		Conta conta2Cliente2 = cliente2.getConta("3");
 		
 		try {
 			manipuladorConta.transferir(new ClienteDiferenteStrategy(0.01), conta1Cliente1, conta2Cliente2, 1100);

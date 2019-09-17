@@ -59,6 +59,7 @@ public class ManipuladorConta implements Subject{
 		conta.credita(valor) ;
 		
 		registraMovimentacao(conta, valor, TipoMovimentacao.CREDITADO);
+		notifyObservers(conta, valor, TipoMovimentacao.CREDITADO);
 	}
 	
 //	public void saque(Conta conta, double valor) throws Exception{
