@@ -32,6 +32,7 @@ public class Principal {
 		
 //		Conta conta2Cliente2 = cliente2.getContas().get(0);
 		Conta conta2Cliente2 = cliente2.getConta("3");
+		Conta conta3Cliente2 = cliente2.getConta("4");
 		
 		try {
 			manipuladorConta.transferir(new ClienteDiferenteStrategy(0.01), conta1Cliente1, conta2Cliente2, 1100);
@@ -42,9 +43,16 @@ public class Principal {
 			manipuladorConta.sacar(conta2Cliente2, 1000);
 			manipuladorConta.imprimirExtrato(conta2Cliente2);
 			
+			manipuladorConta.sacar(conta3Cliente2, 5000);
+			
+			// para dar tempo de os subscribers lerem as mensagens publicadas
+			Thread.sleep(1000);
+			
 		}catch(Exception e) {
 			e.printStackTrace();
 		}
+		
+		
 		
 		
 		

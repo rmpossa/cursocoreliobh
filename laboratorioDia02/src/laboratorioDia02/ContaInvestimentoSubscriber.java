@@ -12,16 +12,15 @@ public class ContaInvestimentoSubscriber implements Subscriber<Movimentacao> {
 
     @Override
     public void onSubscribe(Subscription subscription) {
-        System.out.println("Inscrito!");
         this.subscription = subscription;
         this.subscription.request(1);
-        System.out.println("onSubscribe requisitou 1 item");
+        
     }
 
     @Override
     public void onNext(Movimentacao movimentacao) {
     	System.out.println("Operação no portifólio de contas de investimento");
-		System.out.println("Data: " + movimentacao.getData().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) + " ; Tipo Operação: " + movimentacao.getTipoOperacao() +" ; Valor: " + movimentacao.getValor());
+		System.out.println("\tData: " + movimentacao.getData().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) + " ; Tipo Operação: " + movimentacao.getTipoOperacao() +" ; Valor: " + movimentacao.getValor());
         counter++;
         this.subscription.request(1);
     }
