@@ -15,6 +15,14 @@ public class ContaCorrente extends Conta{
 		super(id, saldoInicial);
 		this.limiteCredito = limiteCredito;
 	}
+
+	@Override
+	public void accept(AplicaTaxaMensalContaVisitor visitor) {
+		visitor.visit(this);
+		
+	}
+	
+	
 	
 	
 }

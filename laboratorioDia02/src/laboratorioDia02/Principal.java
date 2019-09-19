@@ -45,8 +45,19 @@ public class Principal {
 			
 			manipuladorConta.sacar(conta3Cliente2, 5000);
 			
+			System.out.println("Saldo cliente 1:" + cliente1.recuperaSaldoTotal());
+			System.out.println("Saldo cliente 2:" + cliente2.recuperaSaldoTotal());
+			
 			// para dar tempo de os subscribers lerem as mensagens publicadas
 			Thread.sleep(1000);
+			
+			AplicaTaxaMensalClienteVisitor aplicaTaxaMensalClienteVisitor = new AplicaTaxaMensalClienteVisitorImpl();
+			
+			cliente1.accept(aplicaTaxaMensalClienteVisitor);
+			cliente2.accept(aplicaTaxaMensalClienteVisitor);
+			
+			System.out.println("Saldo cliente 1:" + cliente1.recuperaSaldoTotal());
+			System.out.println("Saldo cliente 2:" + cliente2.recuperaSaldoTotal());
 			
 		}catch(Exception e) {
 			e.printStackTrace();

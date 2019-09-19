@@ -1,6 +1,6 @@
 package laboratorioDia02;
 
-public class Conta {
+public abstract class Conta {
 	private String id;
 	private Double saldo;
 	private Cliente cliente;
@@ -41,5 +41,7 @@ public class Conta {
 	public void credita(double valor) {
 		this.saldo += valor;
 	}
+	
+	abstract public void accept(AplicaTaxaMensalContaVisitor visitor);
 	
 }

@@ -23,18 +23,7 @@ public class ManipuladorConta implements Subject{
 		return cliente.getContas();
 	}
 
-	
-//	public void debita(Conta conta, double valor) throws Exception{
-//		double saldoAtual = conta.getSaldo();
-//		
-//		if(valor > saldoAtual) {
-//			throw new Exception("Conta sem saldo suficiente para esta operação.");
-//		}
-//		conta.setSaldo(saldoAtual - valor) ;
-//		
-//		notifyObservers(conta, valor, TipoMovimentacao.DEBITADO);
-//	}
-	
+		
 	public void sacar(Conta conta, double valor) throws Exception{
 		if(valor > conta.getSaldo()) {
 			throw new Exception("Conta sem saldo suficiente para esta operação.");
@@ -50,28 +39,12 @@ public class ManipuladorConta implements Subject{
 		notifyObservers(conta, valor, TipoOperacao.SAQUE);
 	}
 	
-//	public void credita(Conta conta, double valor) {
-//		conta.setSaldo(conta.getSaldo() + valor) ;
-//		
-//		notifyObservers(conta, valor, TipoMovimentacao.CREDITADO);
-//	}
-	
 	public void depositar(Conta conta, double valor) {
 		conta.credita(valor) ;
 		
 		registraMovimentacao(conta, valor, TipoOperacao.DEPOSITO);
 		notifyObservers(conta, valor, TipoOperacao.DEPOSITO);
 	}
-	
-//	public void saque(Conta conta, double valor) throws Exception{
-//		LocalDateTime hora = LocalDateTime.now();
-//		
-//		if((hora.getHour() < 6 || hora.getHour() > 22) && valor > 1000.00) {
-//			throw new Exception("Não é possível sacar mais de 1000 reais antes das 6h e depois das 22h.");
-//		}
-//		
-//		debita(conta, valor);
-//	}
 	
 	public void transferir(TransferenciaStrategy transferenciaStrategy, Conta contaOrigem, Conta contaDestino, double valor) throws Exception{
 	    double saldoContaOrigem = contaOrigem.getSaldo();
@@ -134,7 +107,5 @@ public class ManipuladorConta implements Subject{
 		movimentacoesContaEspecifica.forEach(
 				m -> System.out.println("Data: " + m.getData().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) + " ; Tipo Operação: " + m.getTipoOperacao() +" ; Valor: " + m.getValor()));	
 	}
-	
-	
 	
 }

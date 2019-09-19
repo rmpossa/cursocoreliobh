@@ -13,5 +13,11 @@ public class ContaInvestimento extends Conta{
 		return tipoAplicacao.recuperaRentabilidade();
 	}
 	
+	@Override
+	public void accept(AplicaTaxaMensalContaVisitor visitor) {
+		visitor.visit(this);
+		
+	}
+	
 	
 }

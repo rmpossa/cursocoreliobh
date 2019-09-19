@@ -129,4 +129,8 @@ public class Cliente {
 		return "Cliente: " + getNome() + " " + getSobrenome();
 	}
 	
+	public void accept(AplicaTaxaMensalClienteVisitor aplicaTaxaMensalClienteVisitor) {
+		aplicaTaxaMensalClienteVisitor.visit(this);
+	}
+	
 }
