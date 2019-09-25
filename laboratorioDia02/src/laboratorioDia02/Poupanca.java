@@ -19,7 +19,7 @@ public class Poupanca implements TipoAplicacao {
 	@Override
 	public double recuperaRentabilidade() {
 		// TODO Auto-generated method stub
-		return 0;
+		return 1+taxa;
 	}
 
 }

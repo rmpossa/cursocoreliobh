@@ -23,6 +23,9 @@ public class ManipuladorConta implements Subject{
 		return cliente.getContas();
 	}
 
+	public void registraSaldoInicial(Cliente cliente) {
+		cliente.getContas().forEach(c1 -> registraMovimentacao(c1, c1.getSaldo(), TipoOperacao.SALDO_INICIAL));
+	}
 		
 	public void sacar(Conta conta, double valor) throws Exception{
 		if(valor > conta.getSaldo()) {
@@ -35,7 +38,7 @@ public class ManipuladorConta implements Subject{
 		}
 		conta.debita(valor) ;
 		
-		registraMovimentacao(conta, valor, TipoOperacao.SAQUE);
+		registraMovimentacao(conta, -valor, TipoOperacao.SAQUE);
 		notifyObservers(conta, valor, TipoOperacao.SAQUE);
 	}
 	
@@ -52,11 +55,37 @@ public class ManipuladorConta implements Subject{
 		transferenciaStrategy.transfere(contaOrigem, contaDestino, valor);
 		
 		
-		registraMovimentacao(contaOrigem, saldoContaOrigem - contaOrigem.getSaldo(), TipoOperacao.TRANSFERENCIA_ORIGEM);
+		registraMovimentacao(contaOrigem, -(saldoContaOrigem - contaOrigem.getSaldo()), TipoOperacao.TRANSFERENCIA_ORIGEM);
 		registraMovimentacao(contaDestino, contaDestino.getSaldo() - saldoContaDestino, TipoOperacao.TRANSFERENCIA_DESTINO);
 		
 		notifyObservers(contaOrigem, saldoContaOrigem - contaOrigem.getSaldo(), TipoOperacao.TRANSFERENCIA_ORIGEM);
 		notifyObservers(contaDestino, contaDestino.getSaldo() - saldoContaDestino, TipoOperacao.TRANSFERENCIA_DESTINO);
+	}
+	
+	public void aplicar(Conta conta, double valor) throws Exception {
+		if (!(conta instanceof ContaInvestimento)) {
+			throw new Exception("É necessário uma conta investimento para fazer aplicações");
+		}
+		if(valor > conta.getSaldo()) {
+			throw new Exception("Conta sem saldo suficiente para esta operação.");
+		}
+		ContaInvestimento contaInvestimento = (ContaInvestimento) conta;
+		contaInvestimento.debita(valor) ;
+		
+		registraMovimentacao(contaInvestimento, -valor, TipoOperacao.APLICACAO);
+		notifyObservers(contaInvestimento, valor, TipoOperacao.APLICACAO);
+	}
+	
+	public void resgatar(Conta conta, double valor) throws Exception {
+		if (!(conta instanceof ContaInvestimento)) {
+			throw new Exception("É necessário uma conta investimento para fazer resgates");
+		}
+		ContaInvestimento contaInvestimento = (ContaInvestimento) conta;
+		double valorResgatado = valor*contaInvestimento.recuperaRentabilidade();
+		contaInvestimento.credita(valorResgatado) ;
+		
+		registraMovimentacao(contaInvestimento, valorResgatado, TipoOperacao.RESGATE);
+		notifyObservers(contaInvestimento, valorResgatado, TipoOperacao.RESGATE);
 	}
 	
 	@Override
@@ -100,12 +129,41 @@ public class ManipuladorConta implements Subject{
 	}
 	
 	public void imprimirExtrato(Conta conta) {
-		List<Movimentacao> movimentacoesContaEspecifica = movimentacoesContas.get(conta);
-		
-		System.out.println("Conta Id: " + conta.getId());
-		
-		movimentacoesContaEspecifica.forEach(
-				m -> System.out.println("Data: " + m.getData().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) + " ; Tipo Operação: " + m.getTipoOperacao() +" ; Valor: " + m.getValor()));	
+		synchronized (System.out) {
+			if (conta == null) {
+				System.out.println("");
+				System.out.println("Falha ao imprimir extrato: conta nula");
+				System.out.println("");
+				return;
+			}
+			List<Movimentacao> movimentacoesContaEspecifica = movimentacoesContas.get(conta);
+			
+			System.out.println("");
+			System.out.println("==========================================================================================");
+	//		System.out.println("Extrato da conta nº " + conta.getId() + " do cliente " + conta.getCliente().getNome());
+			System.out.println("EXTRATO DA CONTA Nº " + conta.getId() + " DO CLIENTE " + conta.getCliente().getNome());
+			System.out.println("");
+			
+			if (movimentacoesContaEspecifica != null) {
+				System.out.println("DATA           OPERAÇÃO                                               VALOR          SALDO");
+				System.out.println("------------------------------------------------------------------------------------------");
+				double saldo = 0.0;
+//				movimentacoesContaEspecifica.forEach(
+	//				m -> System.out.println("Data: " + m.getData().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) + " ; Tipo Operação: " + m.getTipoOperacao() +" ; Valor: " + m.getValor()));
+				for (Movimentacao m:movimentacoesContaEspecifica) {
+					saldo += m.getValor();
+					System.out.println(
+						String.format("%-15s",m.getData().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))) + 
+						String.format("%-45s",m.getTipoOperacao()) +
+						String.format("%15.2f",m.getValor()) +
+						String.format("%15.2f",saldo));
+				}
+			}
+			else
+				System.out.println("Não há movimentações para esta conta");
+			System.out.println("==========================================================================================");
+			System.out.println("");
+		}
 	}
 	
 }

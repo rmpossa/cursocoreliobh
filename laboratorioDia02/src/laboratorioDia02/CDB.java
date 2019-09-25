@@ -29,7 +29,7 @@ public class CDB implements TipoAplicacao {
 	@Override
 	public double recuperaRentabilidade() {
 		// TODO Auto-generated method stub
-		return 0;
+		return 1+(percentual*taxa);
 	}
 
 }

@@ -38,7 +38,8 @@ public class Coaf implements Observador{
         //Criando um HttpRequest do tipo Post, especificando sua URI e atribuindo ao método Post o corpo da requisição
         HttpRequest request = HttpRequest.newBuilder()
                 .POST(HttpRequest.BodyPublishers.ofString(body))
-                .uri(URI.create("http://localhost:3000/auditorias")).header("Content-Type", "application/json").build();
+//                .uri(URI.create("http://localhost:3000/auditorias")).header("Content-Type", "application/json").build();
+        		.uri(URI.create("http://localhost:3000/auditorias")).header("Content-Type", "application/json").version(HttpClient.Version.HTTP_1_1).build();
 
         // Enviando a requisição e recebendo o Objeto de resposta da mesma.
         HttpResponse<String> response;

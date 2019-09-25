@@ -2,49 +2,68 @@ package laboratorioDia02;
 
 public class Principal {
 	public static void main(String[] args) {
-		Cliente cliente1 = new Cliente.ClienteBuilder("Rodrigo", "Possa")
-			.setTelefone("319898-1212")
-			.build()
-			.adicionarConta(new ContaCorrente("1", 1000.0, 1000.0))
-			.adicionarConta(new ContaInvestimento("2", 12000.0, new Poupanca(0.03)));
-		
-		ClienteAdapter clienteAdapter = new ClienteAdapterImpl(cliente1);
-		System.out.println(clienteAdapter.getNomeClientePadrao());
-		System.out.println("Endereco: " + cliente1.getEndereco() + "; Telefone: " + cliente1.getTelefone());
-//		Conta conta1Cliente1 = cliente1.getContas().get(0);
-		Conta conta1Cliente1 = cliente1.getConta("1");
-		
-		ManipuladorConta manipuladorConta = new ManipuladorConta();
-		manipuladorConta.registerObserver(Coaf.getInstance());
-		manipuladorConta.registerObserver(PortifolioObserver.getInstance());
-		
-		manipuladorConta.depositar(conta1Cliente1, 51000.0);
-		
-		Cliente cliente2 = new Cliente.ClienteBuilder("Tarcísio", "Brandão")
-			.setEndereco("Av xyz, 123 - B. abc")
-			.build()
-			.adicionarConta(new ContaCorrente("3", 800.0, 1000.0))
-			.adicionarConta(new ContaInvestimento("4", 20000.0, new CDB(0.05,0.9)));
-		
-		clienteAdapter = new ClienteAdapterImpl(cliente2);
-		System.out.println(clienteAdapter.getNomeClienteFormatoAmericano());
-		System.out.println("Endereco: " + cliente2.getEndereco() + "; Telefone: " + cliente2.getTelefone());
-		
-//		Conta conta2Cliente2 = cliente2.getContas().get(0);
-		Conta conta2Cliente2 = cliente2.getConta("3");
-		Conta conta3Cliente2 = cliente2.getConta("4");
-		
 		try {
-			manipuladorConta.transferir(new ClienteDiferenteStrategy(0.01), conta1Cliente1, conta2Cliente2, 1100);
+			ManipuladorConta manipuladorConta = new ManipuladorConta();
+			manipuladorConta.registerObserver(Coaf.getInstance());
+			manipuladorConta.registerObserver(PortifolioObserver.getInstance());
 			
-			manipuladorConta.imprimirExtrato(conta1Cliente1);
-			manipuladorConta.imprimirExtrato(conta2Cliente2);
+			Cliente cliente1 = new Cliente.ClienteBuilder("Rodrigo", "Possa")
+				.setTelefone("319898-1212")
+				.build()
+				.adicionarConta(new ContaCorrente("1", 1000.0, 1000.0))
+				.adicionarConta(new ContaInvestimento("2", 12000.0, new Poupanca(0.003)));
+			manipuladorConta.registraSaldoInicial(cliente1);
 			
-			manipuladorConta.sacar(conta2Cliente2, 1000);
-			manipuladorConta.imprimirExtrato(conta2Cliente2);
+			ClienteAdapter clienteAdapter = new ClienteAdapterImpl(cliente1);
+			System.out.println(clienteAdapter.getNomeClientePadrao());
+			System.out.println("Endereco: " + cliente1.getEndereco() + "; Telefone: " + cliente1.getTelefone());
+	//		Conta conta1Cliente1 = cliente1.getContas().get(0);
+			Conta contaCorrenteCliente1 = cliente1.getConta("1");
+			Conta contaInvestimentoCliente1 = cliente1.getConta("2");
 			
-			manipuladorConta.sacar(conta3Cliente2, 5000);
+			manipuladorConta.depositar(contaCorrenteCliente1, 51000.0);
+			manipuladorConta.aplicar(contaInvestimentoCliente1, 10000.0);
 			
+			Cliente cliente2 = new Cliente.ClienteBuilder("Tarcísio", "Brandão")
+				.setEndereco("Av xyz, 123 - B. abc")
+				.build()
+				.adicionarConta(new ContaCorrente("3", 800.0, 1000.0))
+				.adicionarConta(new ContaInvestimento("4", 20000.0, new CDB(0.01,1.0)));
+			manipuladorConta.registraSaldoInicial(cliente2);
+
+			clienteAdapter = new ClienteAdapterImpl(cliente2);
+			System.out.println(clienteAdapter.getNomeClienteFormatoAmericano());
+			System.out.println("Endereco: " + cliente2.getEndereco() + "; Telefone: " + cliente2.getTelefone());
+			
+	//		Conta conta2Cliente2 = cliente2.getContas().get(0);
+			Conta contaCorrenteCliente2 = cliente2.getConta("3");
+			Conta contaInvestimentoCliente2 = cliente2.getConta("4");
+			
+			manipuladorConta.aplicar(contaInvestimentoCliente2, 20000.0);
+			
+			Cliente cliente3 = new Cliente.ClienteBuilder("Lucas", "Bibiano")
+				.setEndereco("Rua dos Anjos, 23 - Belvedere")
+				.build()
+				.adicionarConta(new ContaCorrente("5", 300.0, 1500.0))
+				.adicionarConta(new ContaInvestimento("6", 28000.0, new CDB(0.01,1.0)));
+			manipuladorConta.registraSaldoInicial(cliente3);
+			
+			Conta contaCorrenteCliente3 = cliente3.getConta("5");
+			Conta contaInvestimentoCliente3 = cliente3.getConta("6");
+		
+			manipuladorConta.transferir(new ClienteDiferenteStrategy(0.01), contaCorrenteCliente1, contaCorrenteCliente2, 1100);
+			
+			manipuladorConta.imprimirExtrato(contaCorrenteCliente1);
+			
+			manipuladorConta.resgatar(contaInvestimentoCliente1, 10000.0);
+			manipuladorConta.imprimirExtrato(contaInvestimentoCliente1);
+
+			manipuladorConta.sacar(contaCorrenteCliente2, 1000);
+			manipuladorConta.imprimirExtrato(contaCorrenteCliente2);
+			
+			manipuladorConta.resgatar(contaInvestimentoCliente2, 20000.0);
+			manipuladorConta.imprimirExtrato(contaInvestimentoCliente2);
+
 			System.out.println("Saldo cliente 1:" + cliente1.recuperaSaldoTotal());
 			System.out.println("Saldo cliente 2:" + cliente2.recuperaSaldoTotal());
 			
