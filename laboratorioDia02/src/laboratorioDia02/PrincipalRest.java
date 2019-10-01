@@ -8,10 +8,12 @@ import java.net.http.HttpResponse;
 
 public class PrincipalRest {
 	
-	public static int criarObjeto(String url, String jsonCliente) throws IOException, InterruptedException {
+	public static int criarObjeto(String url, String json) throws IOException, InterruptedException {
 		 HttpClient client = HttpClient.newHttpClient();
-        // String no formato Json que irá conter o corpo da requisição POST
-        String body = jsonCliente;
+        
+		 // String no formato Json que irá conter o corpo da requisição POST
+        String body = json;
+
         //Criando um HttpRequest do tipo Post, especificando sua URI e atribuindo ao método Post o corpo da requisição
         HttpRequest request = HttpRequest.newBuilder()
                 .POST(HttpRequest.BodyPublishers.ofString(body))
@@ -24,9 +26,12 @@ public class PrincipalRest {
 	}
 	
 	public static int criarAssociacao(String url, String objetoPai) throws IOException, InterruptedException {
-		 HttpClient client = HttpClient.newHttpClient();
+		
+		HttpClient client = HttpClient.newHttpClient();
+		 
        // String no formato Json que irá conter o corpo da requisição POST
        String body = objetoPai; // "http://localhost:8080/libraries/1"
+       
        //Criando um HttpRequest do tipo Post, especificando sua URI e atribuindo ao método Post o corpo da requisição
        HttpRequest request = HttpRequest.newBuilder()
                .PUT(HttpRequest.BodyPublishers.ofString(body))
