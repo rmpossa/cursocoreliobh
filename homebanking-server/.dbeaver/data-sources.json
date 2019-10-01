@@ -1,0 +1,28 @@
+{
+	"folders": {},
+	"connections": {
+		"h2_embedded-16d87881cac-37bf9d5580e1bba5": {
+			"provider": "generic",
+			"driver": "h2_embedded",
+			"name": "H2 Embedded - teste",
+			"save-password": true,
+			"read-only": false,
+			"configuration": {
+				"database": "file:~/teste",
+				"url": "jdbc:h2:file:~/teste",
+				"type": "dev",
+				"handlers": {}
+			}
+		}
+	},
+	"connection-types": {
+		"dev": {
+			"name": "Development",
+			"color": "255,255,255",
+			"description": "Regular development database",
+			"auto-commit": true,
+			"confirm-execute": false,
+			"confirm-data-change": false
+		}
+	}
+}
