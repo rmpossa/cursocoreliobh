@@ -18,6 +18,11 @@ public class Poupanca extends TipoAplicacao {
 		this.taxa = taxa;
 	}
 	
+	public Poupanca() {
+		
+	}
+
+	
 	public double getTaxa() {
 		return taxa;
 	}

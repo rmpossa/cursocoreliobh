@@ -22,6 +22,10 @@ public class CDB extends TipoAplicacao {
 		this.percentual = percentual;
 	}
 	
+	public CDB() {
+		
+	}
+	
 	public double getTaxa() {
 		return taxa;
 	}

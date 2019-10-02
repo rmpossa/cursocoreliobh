@@ -22,16 +22,29 @@ public class ContaInvestimento extends Conta{
 		this.tipoAplicacao = tipoAplicacao;
 	}
 	
+	public ContaInvestimento() {
+	
+	}
 	
 	public double recuperaRentabilidade() {
 		return tipoAplicacao.recuperaRentabilidade();
 	}
 	
-	//@Override
+	@Override
 	public void accept(AplicaTaxaMensalContaVisitor visitor) {
 		visitor.visit(this);
 		
 	}
+
+	public TipoAplicacao getTipoAplicacao() {
+		return tipoAplicacao;
+	}
+
+	public void setTipoAplicacao(TipoAplicacao tipoAplicacao) {
+		this.tipoAplicacao = tipoAplicacao;
+	}
+	
+	
 	
 	
 }

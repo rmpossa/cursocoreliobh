@@ -8,7 +8,7 @@ import br.jus.trt3.visitor.AplicaTaxaMensalContaVisitor;
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "tipo", length = 1, discriminatorType = DiscriminatorType.STRING)
 @DiscriminatorValue(value = "T")
-public class Conta {
+public abstract class Conta {
 	
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -60,6 +60,6 @@ public class Conta {
 		this.saldo += valor;
 	}
 	
-	//abstract public void accept(AplicaTaxaMensalContaVisitor visitor);
+	abstract public void accept(AplicaTaxaMensalContaVisitor visitor);
 	
 }

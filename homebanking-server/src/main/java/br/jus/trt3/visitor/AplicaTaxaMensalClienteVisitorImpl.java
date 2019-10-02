@@ -9,7 +9,7 @@ public class AplicaTaxaMensalClienteVisitorImpl implements AplicaTaxaMensalClien
 		AplicaTaxaMensalContaVisitor aplicaTaxaMensalContaVisitor = new AplicaTaxaMensalContaVisitorImpl();
 		
 		for(Conta conta:cliente.getContas()) {
-		//	conta.accept(aplicaTaxaMensalContaVisitor);
+		conta.accept(aplicaTaxaMensalContaVisitor);
 		}
 		
 	}
