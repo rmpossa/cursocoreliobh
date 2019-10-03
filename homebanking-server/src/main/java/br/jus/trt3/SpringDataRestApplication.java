@@ -6,6 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
+@ComponentScan({"repositorios","controller"})
 public class SpringDataRestApplication {
 
 	public static void main(String[] args) {
