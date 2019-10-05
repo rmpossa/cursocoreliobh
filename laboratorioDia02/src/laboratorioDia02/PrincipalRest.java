@@ -24,7 +24,7 @@ public class PrincipalRest {
        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
        
 	}
-	
+      
 	public static String criarObjeto(String url, String json) throws IOException, InterruptedException {
 		HttpClient client = HttpClient.newHttpClient();
         
@@ -68,12 +68,12 @@ public class PrincipalRest {
 			String urlCliente1 = criarObjeto("http://localhost:8080/clientes", "{ \"nome\": \"Rodrigo\", \"sobrenome\": \"Possa\", \"telefone\": \"12323-0998\"}");
 			String urlCliente2 = criarObjeto("http://localhost:8080/clientes", "{ \"nome\": \"Tarcisio\", \"sobrenome\": \"Brandao\", \"endereco\": \"Av. A, N 1 - Serra\"}");
 			
-			String urlConta1 = criarObjeto("http://localhost:8080/contaCorrentes", "{\"saldo\": 1000.0, \"limiteCredito\": 1000.0}");
-			String urlConta2 = criarObjeto("http://localhost:8080/contaCorrentes", "{\"saldo\": 1500.0, \"limiteCredito\": 1500.0}");
+			String urlConta1 = criarObjeto("http://localhost:8080/contaCorrentes", "{\"codigoConta\":\"1111-1\",\"saldo\": 1000.0, \"limiteCredito\": 1000.0}");
+			String urlConta2 = criarObjeto("http://localhost:8080/contaCorrentes", "{\"codigoConta\":\"2222-2\",\"saldo\": 1500.0, \"limiteCredito\": 1500.0}");
 			
 			
-			String urlConta3 = criarObjeto("http://localhost:8080/contaInvestimentoes", "{\"saldo\": 12000.0}");
-			String urlConta4 = criarObjeto("http://localhost:8080/contaInvestimentoes", "{\"saldo\": 2000.0}");
+			String urlConta3 = criarObjeto("http://localhost:8080/contaInvestimentoes", "{\"codigoConta\":\"3333-3\",\"saldo\": 12000.0}");
+			String urlConta4 = criarObjeto("http://localhost:8080/contaInvestimentoes", "{\"codigoConta\":\"4444-4\",\"saldo\": 2000.0}");
 			
 			String urlTipoAplicacao1 = criarObjeto("http://localhost:8080/poupancas", "{\"taxa\": 0.003}");
 			String urlTipoAplicacao2 = criarObjeto("http://localhost:8080/cDBs", "{\"taxa\": 0.01}, \"percentual\":1.0}");
@@ -91,6 +91,15 @@ public class PrincipalRest {
 			executarOperacao("registraSaldoInicial", "nomeCliente=Rodrigo");
 			executarOperacao("registraSaldoInicial", "nomeCliente=Tarcisio");
 			
+						
+			// TODO
+			/*ClienteAdapter clienteAdapter = new ClienteAdapterImpl(cliente1);
+			System.out.println(clienteAdapter.getNomeClientePadrao());
+			System.out.println("Endereco: " + cliente1.getEndereco() + "; Telefone: " + cliente1.getTelefone());*/
+			
+			executarOperacao("depositar", "codigoConta=1111-1&valor=51000.0");
+			executarOperacao("aplicar", "codigoConta=3333-3&valor=10000.0");
+
 		} catch(Exception e) {
 			e.printStackTrace();
 		}

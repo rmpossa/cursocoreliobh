@@ -1,6 +1,21 @@
 package br.jus.trt3.model;
 
-import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.Column;
+import javax.persistence.DiscriminatorColumn;
+import javax.persistence.DiscriminatorType;
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 import br.jus.trt3.visitor.AplicaTaxaMensalContaVisitor;
 
@@ -14,11 +29,16 @@ public abstract class Conta {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	@Column
+	private String codigoConta;
+	@Column
 	private Double saldo;
 	
 	@ManyToOne
     @JoinColumn(name="cliente_id")
 	private Cliente cliente;
+	
+	@OneToMany(mappedBy = "conta")
+	private List<Movimentacao> movimentacoes = new ArrayList<Movimentacao>();
 	
 	public Conta() {
 		
@@ -60,6 +80,19 @@ public abstract class Conta {
 		this.saldo += valor;
 	}
 	
+	public String getCodigoConta() {
+		return codigoConta;
+	}
+	public void setCodigoConta(String codigoConta) {
+		this.codigoConta = codigoConta;
+	}
+	
+	public List<Movimentacao> getMovimentacoes() {
+		return movimentacoes;
+	}
+	public void setMovimentacoes(List<Movimentacao> movimentacoes) {
+		this.movimentacoes = movimentacoes;
+	}
 	abstract public void accept(AplicaTaxaMensalContaVisitor visitor);
 	
 }

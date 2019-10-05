@@ -13,22 +13,29 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.jus.trt3.model.Cliente;
 import br.jus.trt3.model.Conta;
+import br.jus.trt3.model.ContaInvestimento;
 import br.jus.trt3.model.Movimentacao;
 import br.jus.trt3.model.TipoOperacao;
 import br.jus.trt3.repositorios.ClienteRepositorio;
+import br.jus.trt3.repositorios.ContaRepositorio;
+import br.jus.trt3.repositorios.MovimentacaoRepositorio;
 
 @RestController
 public class ManipuladorConta/* implements Subject*/{
 	
-	private Map<Conta,List<Movimentacao>> movimentacoesContas;
+	//private Map<Conta,List<Movimentacao>> movimentacoesContas;
 	
 	@Autowired
 	private ClienteRepositorio clienteRepositorio;
+	@Autowired
+	private ContaRepositorio contaRepositorio;
+	@Autowired
+	private MovimentacaoRepositorio movimentacaoRepositorio;
 	
 	//private List<Observador> observers = new ArrayList<Observador>();
 	
 	public ManipuladorConta() {
-		this.movimentacoesContas = new HashMap<Conta,List<Movimentacao>>();
+		//this.movimentacoesContas = new HashMap<Conta,List<Movimentacao>>();
 	}
 	
 	/*public List<Conta> obterContasCliente(Cliente cliente) {
@@ -41,8 +48,46 @@ public class ManipuladorConta/* implements Subject*/{
 		Cliente cliente = clienteRepositorio.findByNome(nomeCliente);
 		cliente.getContas().forEach(c1 -> registraMovimentacao(c1, c1.getSaldo(), TipoOperacao.SALDO_INICIAL));
 	}
+
+	@RequestMapping("/depositar")
+	public void depositar(@RequestParam(value="codigoConta") String codigoConta, @RequestParam(value="valor") double valor) {
+		Conta conta = contaRepositorio.findByCodigoConta(codigoConta);
+		conta.credita(valor) ;
+		
+		registraMovimentacao(conta, valor, TipoOperacao.DEPOSITO);
+		//notifyObservers(conta, valor, TipoOperacao.DEPOSITO);
+	}
 	
-	 	
+	/*public void transferir(TransferenciaStrategy transferenciaStrategy, Conta contaOrigem, Conta contaDestino, double valor) throws Exception{
+	    double saldoContaOrigem = contaOrigem.getSaldo();
+	    double saldoContaDestino = contaDestino.getSaldo();
+		transferenciaStrategy.transfere(contaOrigem, contaDestino, valor);
+		
+		
+		registraMovimentacao(contaOrigem, -(saldoContaOrigem - contaOrigem.getSaldo()), TipoOperacao.TRANSFERENCIA_ORIGEM);
+		registraMovimentacao(contaDestino, contaDestino.getSaldo() - saldoContaDestino, TipoOperacao.TRANSFERENCIA_DESTINO);
+		
+		notifyObservers(contaOrigem, saldoContaOrigem - contaOrigem.getSaldo(), TipoOperacao.TRANSFERENCIA_ORIGEM);
+		notifyObservers(contaDestino, contaDestino.getSaldo() - saldoContaDestino, TipoOperacao.TRANSFERENCIA_DESTINO);
+	}*/
+	
+	@RequestMapping("/aplicar")
+	public void aplicar(@RequestParam(value="codigoConta") String codigoConta, @RequestParam(value="valor") double valor) throws Exception{
+		Conta conta = contaRepositorio.findByCodigoConta(codigoConta);
+		if (!(conta instanceof ContaInvestimento)) {
+			throw new Exception("É necessário uma conta investimento para fazer aplicações");
+		}
+		if(valor > conta.getSaldo()) {
+			throw new Exception("Conta sem saldo suficiente para esta operação.");
+		}
+		ContaInvestimento contaInvestimento = (ContaInvestimento) conta;
+		contaInvestimento.debita(valor) ;
+		
+		registraMovimentacao(contaInvestimento, -valor, TipoOperacao.APLICACAO);
+		//notifyObservers(contaInvestimento, valor, TipoOperacao.APLICACAO);
+	}
+	
+	
 	/*public void sacar(Conta conta, double valor) throws Exception{
 		if(valor > conta.getSaldo()) {
 			throw new Exception("Conta sem saldo suficiente para esta opera��o.");
@@ -135,13 +180,7 @@ public class ManipuladorConta/* implements Subject*/{
 		movimentacao.setValor(valor);
 		movimentacao.setTipoOperacao(tipoOperacao);
 		
-		if(!movimentacoesContas.containsKey(conta)) {
-			movimentacoesContas.put(conta, new ArrayList<Movimentacao>());
-		}
-		
-		List<Movimentacao> movimentacoesContaEspecifica = movimentacoesContas.get(conta);
-		movimentacoesContaEspecifica.add(movimentacao);
-		
+		movimentacaoRepositorio.save(movimentacao);
 	}
 	/*
 	public void imprimirExtrato(Conta conta) {
