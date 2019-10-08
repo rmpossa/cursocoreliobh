@@ -69,11 +69,11 @@ public class PrincipalRest {
 			String urlCliente2 = criarObjeto("http://localhost:8080/clientes", "{ \"nome\": \"Tarcisio\", \"sobrenome\": \"Brandao\", \"endereco\": \"Av. A, N 1 - Serra\"}");
 			
 			String urlConta1 = criarObjeto("http://localhost:8080/contaCorrentes", "{\"codigoConta\":\"1111-1\",\"saldo\": 1000.0, \"limiteCredito\": 1000.0}");
-			String urlConta2 = criarObjeto("http://localhost:8080/contaCorrentes", "{\"codigoConta\":\"2222-2\",\"saldo\": 1500.0, \"limiteCredito\": 1500.0}");
+			String urlConta2 = criarObjeto("http://localhost:8080/contaCorrentes", "{\"codigoConta\":\"2222-2\",\"saldo\": 800.0, \"limiteCredito\": 1000.0}");
 			
 			
 			String urlConta3 = criarObjeto("http://localhost:8080/contaInvestimentoes", "{\"codigoConta\":\"3333-3\",\"saldo\": 12000.0}");
-			String urlConta4 = criarObjeto("http://localhost:8080/contaInvestimentoes", "{\"codigoConta\":\"4444-4\",\"saldo\": 2000.0}");
+			String urlConta4 = criarObjeto("http://localhost:8080/contaInvestimentoes", "{\"codigoConta\":\"4444-4\",\"saldo\": 20000.0}");
 			
 			String urlTipoAplicacao1 = criarObjeto("http://localhost:8080/poupancas", "{\"taxa\": 0.003}");
 			String urlTipoAplicacao2 = criarObjeto("http://localhost:8080/cDBs", "{\"taxa\": 0.01}, \"percentual\":1.0}");
@@ -99,7 +99,13 @@ public class PrincipalRest {
 			
 			executarOperacao("depositar", "codigoConta=1111-1&valor=51000.0");
 			executarOperacao("aplicar", "codigoConta=3333-3&valor=10000.0");
+			executarOperacao("aplicar", "codigoConta=4444-4&valor=20000.0");
 
+			executarOperacao("transferir", "codigoContaOrigem=1111-1&codigoContaDestino=2222-2&valor=1100.0");
+			
+			executarOperacao("resgatar", "codigoConta=3333-3&valor=10000.0");
+			executarOperacao("sacar", "codigoConta=2222-2&valor=1000.0");
+			executarOperacao("resgatar", "codigoConta=4444-4&valor=20000.0");
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
