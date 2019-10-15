@@ -1,4 +1,4 @@
-package br.jus.trt3.homebanking;
+package br.jus.trt3.homebanking.controllers;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

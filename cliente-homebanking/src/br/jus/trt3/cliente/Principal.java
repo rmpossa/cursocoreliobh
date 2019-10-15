@@ -144,7 +144,7 @@ public class Principal {
 	}
 
 	private static void cargaCartaoCredito() throws IOException, InterruptedException {
-		String urlCartaoCredito1 = criarObjeto("http://localhost:8080/cartaoapp/cartaoCreditoes", "{ \"limite\": \"1000.0\", \"saldo\": \"0.0\", \"codigoConta\": \"1111-1\", \"numeroCartao\": \"1111.1111.1111.1111\" }");
+		String urlCartaoCredito1 = criarObjeto("http://localhost:8080/cartaoCreditoes", "{ \"limite\": \"1000.0\", \"saldo\": \"0.0\", \"codigoConta\": \"1111-1\", \"numeroCartao\": \"1111.1111.1111.1111\" }");
 	}		
 			
 			
