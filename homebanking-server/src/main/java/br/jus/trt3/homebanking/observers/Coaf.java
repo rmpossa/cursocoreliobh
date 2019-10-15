@@ -31,9 +31,9 @@ public class Coaf implements Observador{
         // Criando o HttpClient
         HttpClient client = HttpClient.newHttpClient();
         // String no formato Json que ir� conter o corpo da requisi��o POST
-        String body = "{ \"cliente\": \"" + conta.getCliente().getNomeCompleto() + "\", \"idConta\": \"" +
+        String body = "{ \"nomeCliente\": \"" + conta.getCliente().getNomeCompleto() + "\", \"codigoConta\": \"" +
         		conta.getCodigoConta() + "\", \"valor\": \"" + valor + "\", \"data\": \"" + 
-        		data.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) + "\" }";
+        		data.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")) + "\" }";
         //Criando um HttpRequest do tipo Post, especificando sua URI e atribuindo ao m�todo Post o corpo da requisi��o
         HttpRequest request = HttpRequest.newBuilder()
                 .POST(HttpRequest.BodyPublishers.ofString(body))
