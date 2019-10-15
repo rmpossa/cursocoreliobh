@@ -106,6 +106,12 @@ public class Principal {
 			executarOperacao("resgatar", "codigoConta=3333-3&valor=10000.0");
 			executarOperacao("sacar", "codigoConta=2222-2&valor=1000.0");
 			executarOperacao("resgatar", "codigoConta=4444-4&valor=20000.0");
+			
+			//TODO: realizar as operações do cartão de crédito
+			cargaCartaoCredito();
+			executarOperacao("cartaoapp/debitaCartao", "numeroCartao=1111.1111.1111.1111&valorDebitar=100.0");
+			
+			
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
@@ -135,6 +141,10 @@ public class Principal {
 		
 		manipuladorConta.depositar(contaCorrenteCliente1, 51000.0);
 		manipuladorConta.aplicar(contaInvestimentoCliente1, 10000.0);*/
+	}
+
+	private static void cargaCartaoCredito() throws IOException, InterruptedException {
+		String urlCartaoCredito1 = criarObjeto("http://localhost:8080/cartaoapp/cartaoCreditoes", "{ \"limite\": \"1000.0\", \"saldo\": \"0.0\", \"codigoConta\": \"1111-1\", \"numeroCartao\": \"1111.1111.1111.1111\" }");
 	}		
 			
 			

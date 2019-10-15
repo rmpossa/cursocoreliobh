@@ -31,6 +31,9 @@ public class GatewayApplication {
 	                        .setFallbackUri("forward:/fallback")))
 	                .uri("http://localhost:8082/auditorias"))
 	            .route(p -> p
+	            		.path("/cartaoapp/*")
+	            		.uri("http://localhost:8083"))
+	            .route(p -> p
 		                .path("/*")
 		                .uri("http://localhost:8081"))
 	            .build();
