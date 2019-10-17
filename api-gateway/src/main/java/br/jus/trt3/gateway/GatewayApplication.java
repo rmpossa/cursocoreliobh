@@ -29,9 +29,13 @@ public class GatewayApplication {
 	                    	.hystrix(config -> config
 	                        .setName("mycmd2")
 	                        .setFallbackUri("forward:/fallback")))
-	                .uri("http://localhost:8082/auditorias"))
+	                .uri("http://localhost:8082"))
 	            .route(p -> p
 	            		.path("/cartaoCreditoes")
+	            		.uri("http://localhost:8083"))
+	            		
+	            .route(p -> p
+	            		.path("/cartaoapp/*")
 	            		.uri("http://localhost:8083"))
 	            .route(p -> p
 		                .path("/*")

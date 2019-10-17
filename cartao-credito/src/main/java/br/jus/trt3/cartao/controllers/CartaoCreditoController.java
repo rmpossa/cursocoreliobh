@@ -14,7 +14,7 @@ public class CartaoCreditoController {
 	@Autowired
 	CartaoCreditoRepositorio cartaoCreditoRepositorio;
 	
-	@RequestMapping("/debitaCartao")
+	@RequestMapping("/cartaoapp/debitaCartao")
 	public void debitaCartao(
 			@RequestParam(value="numeroCartao", defaultValue="") String numeroCartao,
 			@RequestParam(value="valorDebitar", defaultValue="") double valorDebitar
@@ -30,11 +30,13 @@ public class CartaoCreditoController {
 			
 		}
 		
+		cartaoCreditoRepositorio.save(cartaoCredito);
+		
 		//TODO: retornar mensagem de erro quando valor a debitar for maior do que o saldo
 		
 	}
 	
-	@RequestMapping("/abasteceCartao")
+	@RequestMapping("/cartaoapp/abasteceCartao")
 	public void abasteceCartao(
 			@RequestParam(value="numeroConta", defaultValue="") String numeroConta,
 			@RequestParam(value="numeroCartao", defaultValue="") String numeroCartao,
