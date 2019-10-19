@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.jus.trt3.cartao.models.CartaoCredito;
+import br.jus.trt3.cartao.properties.AppProperties;
 import br.jus.trt3.cartao.repositories.CartaoCreditoRepositorio;
 
 @RestController
@@ -13,6 +14,9 @@ public class CartaoCreditoController {
 	
 	@Autowired
 	CartaoCreditoRepositorio cartaoCreditoRepositorio;
+	
+	@Autowired
+	AppProperties appProperties;
 	
 	@RequestMapping("/cartaoapp/debitaCartao")
 	public void debitaCartao(

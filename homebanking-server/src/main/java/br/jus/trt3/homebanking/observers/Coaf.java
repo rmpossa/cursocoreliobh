@@ -8,11 +8,15 @@ import java.net.http.HttpResponse;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import br.jus.trt3.homebanking.models.Conta;
 import br.jus.trt3.homebanking.models.TipoOperacao;
+import br.jus.trt3.homebanking.properties.AppProperties;
 
 public class Coaf implements Observador{
-
+	@Autowired
+	private AppProperties appProperties;
 	
 	private Coaf(){}
     
@@ -37,8 +41,7 @@ public class Coaf implements Observador{
         //Criando um HttpRequest do tipo Post, especificando sua URI e atribuindo ao m�todo Post o corpo da requisi��o
         HttpRequest request = HttpRequest.newBuilder()
                 .POST(HttpRequest.BodyPublishers.ofString(body))
-//                .uri(URI.create("http://localhost:3000/auditorias")).header("Content-Type", "application/json").build();
-        		.uri(URI.create("http://localhost:8080/auditorias")).header("Content-Type", "application/json").version(HttpClient.Version.HTTP_1_1).build();
+        		.uri(URI.create("http://"+appProperties.getHostnameCoaf()+":8080/auditorias")).header("Content-Type", "application/json").version(HttpClient.Version.HTTP_1_1).build();
 
         // Enviando a requisição recebendo o Objeto de resposta da mesma.
         HttpResponse<String> response;

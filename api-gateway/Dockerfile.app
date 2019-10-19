@@ -20,6 +20,7 @@ WORKDIR /home/binarios
 
 # Copiando o binario gerado no container do primeiro estagio para o container do segundo estagio
 COPY --from=BUILD_BINARIO /home/codigo/target/api-gateway-0.1.0.jar /home/binarios
+COPY --from=BUILD_BINARIO /home/codigo/application*.properties /home/binarios
 
 # Comando para execucao de nossa aplicacao assim que um novo container for criado
-CMD ["sh", "-c", "java -jar -Dserver.port=8080 ./api-gateway-0.1.0.jar"]
+CMD ["sh", "-c", "java -jar -Dserver.port=8080 ./api-gateway-0.1.0.jar --spring.profiles.active=docker"]

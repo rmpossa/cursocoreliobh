@@ -28,6 +28,7 @@ import br.jus.trt3.homebanking.models.TipoOperacao;
 import br.jus.trt3.homebanking.observers.Coaf;
 import br.jus.trt3.homebanking.observers.Observador;
 import br.jus.trt3.homebanking.observers.Subject;
+import br.jus.trt3.homebanking.properties.AppProperties;
 import br.jus.trt3.homebanking.repositories.ClienteRepositorio;
 import br.jus.trt3.homebanking.repositories.ContaRepositorio;
 import br.jus.trt3.homebanking.repositories.MovimentacaoRepositorio;
@@ -39,7 +40,6 @@ import io.swagger.annotations.ApiParam;
 
 @RestController
 public class ManipuladorConta implements Subject{
-	
 	@Autowired
 	private ClienteRepositorio clienteRepositorio;
 	@Autowired
