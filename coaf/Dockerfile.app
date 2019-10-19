@@ -20,7 +20,7 @@ WORKDIR /home/binarios
 
 # Copiando o binario gerado no container do primeiro estagio para o container do segundo estagio
 COPY --from=BUILD_BINARIO /home/codigo/target/coaf-0.0.1-SNAPSHOT.jar /home/binarios
-COPY --from=BUILD_BINARIO /home/codigo/application*.properties /home/binarios
+COPY --from=BUILD_BINARIO /home/codigo/application*.properties /home/binarios/
 
 # Comando para execucao de nossa aplicacao assim que um novo container for criado
 CMD ["sh", "-c", "java -jar -Dserver.port=8082 ./coaf-0.0.1-SNAPSHOT.jar --spring.profiles.active=docker"]

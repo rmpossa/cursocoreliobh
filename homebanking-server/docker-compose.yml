@@ -1,6 +1,6 @@
 version: '2'
 services:
-  executa-aplicacao:
+  home-banking-server:
     container_name: HomeBankingServer
     image: homebanking-server:latest
     restart: always
@@ -8,15 +8,19 @@ services:
       - "8081:8081"
     expose:
       - "8081"
-  executa-aplicacao2:
+    networks:
+      - network-app
+  coaf-server:
     container_name: CoafServer
     image: coaf-server:latest
     restart: always
     ports:
       - "8082:8082"
     expose:
-      - "8082"      
-  executa-aplicacao3:
+      - "8082"
+    networks:
+      - network-app      
+  cartao-credito-server:
     container_name: CartaoCreditoServer
     image: cartaocredito-server:latest
     restart: always
@@ -24,11 +28,17 @@ services:
       - "8083:8083"
     expose:
       - "8083"      
-  executa-aplicacao4:
+    networks:
+      - network-app      
+  api-gateway-server:
     container_name: ApiGatewayServer
     image: api-gateway-server:latest
     restart: always
     ports:
       - "8080:8080"
     expose:
-      - "8080"      
+      - "8080"
+    networks:
+      - network-app      
+networks:
+  network-app:
