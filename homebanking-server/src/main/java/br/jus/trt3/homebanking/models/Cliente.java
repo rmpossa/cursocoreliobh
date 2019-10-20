@@ -19,7 +19,7 @@ public class Cliente {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@Column
+	@Column(unique = true)
 	private String nome;
 	@Column
 	private String sobrenome;

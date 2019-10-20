@@ -28,7 +28,7 @@ public abstract class Conta {
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	@Column
+	@Column(unique = true)
 	private String codigoConta;
 	@Column
 	private Double saldo;
