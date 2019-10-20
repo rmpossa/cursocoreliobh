@@ -4,14 +4,14 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 
 @ConfigurationProperties(prefix="app")
 public class AppProperties {
-	private String hostnameCoaf;
+	private String hostnameGateway;
 
-	public String getHostnameCoaf() {
-		return hostnameCoaf;
+	public String getHostnameGateway() {
+		return hostnameGateway;
 	}
 
-	public void setHostnameCoaf(String hostnameCoaf) {
-		this.hostnameCoaf = hostnameCoaf;
+	public void setHostnameGateway(String hostnameGateway) {
+		this.hostnameGateway = hostnameGateway;
 	}
 
 	

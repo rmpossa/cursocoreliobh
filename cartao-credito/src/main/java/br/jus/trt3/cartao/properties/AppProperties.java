@@ -4,16 +4,15 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 
 @ConfigurationProperties(prefix="app")
 public class AppProperties {
-	private String hostnameHomeBanking;
+	private String hostnameGateway;
 
-	public String getHostnameHomeBanking() {
-		return hostnameHomeBanking;
+	public String getHostnameGateway() {
+		return hostnameGateway;
 	}
 
-	public void setHostnameHomeBanking(String hostnameHomeBanking) {
-		this.hostnameHomeBanking = hostnameHomeBanking;
+	public void setHostnameGateway(String hostnameGateway) {
+		this.hostnameGateway = hostnameGateway;
 	}
 
-		
 	
 }
