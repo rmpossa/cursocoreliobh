@@ -22,13 +22,13 @@ public class ClienteController {
     @Autowired
     private ClienteRepositorio clienteRepositorio;
 
-	@GetMapping(path="clientes")
+	@GetMapping(path="clienteController")
     @ApiOperation(value="Recupera todos os clientes.")
     public Iterable<Cliente> recuperaTodosClientes() {
         return clienteRepositorio.findAll();
     }
 
-    @PostMapping(path="clientes")
+    @PostMapping(path="clienteController")
     @ApiOperation(value="Cria um novo cliente.")
     public Cliente criaCliente(@ApiParam(value="nome do cliente") @RequestParam(value="nome", required=true) String nome,
     	@ApiParam(value="sobrenome do cliente") @RequestParam(value="sobrenome", required=true) String sobrenome,
@@ -40,7 +40,7 @@ public class ClienteController {
         	.build());
     }
 
-    @PutMapping("/clientes/{nomeCliente}")
+    @PutMapping("/clienteController/{nomeCliente}")
     public Cliente atualizaCliente(@PathVariable String nomeCliente, 
     	@ApiParam(value="sobrenome do cliente") @RequestParam(value="sobrenome") String sobrenome,
     	@ApiParam(value="endereço do cliente") @RequestParam(value="endereco") String endereco,
@@ -54,7 +54,7 @@ public class ClienteController {
         }).orElseThrow(() -> new ClienteNaoEncontradoException(nomeOperacao,nomeCliente));
     }
 
-    @DeleteMapping("/clientes/{nomeCliente}")
+    @DeleteMapping("/clienteController/{nomeCliente}")
     public ResponseEntity<?> excluiCliente(@PathVariable String nomeCliente) {
 		String nomeOperacao = "excluiCliente";
         return clienteRepositorio.findByNome(nomeCliente).map(cliente -> {

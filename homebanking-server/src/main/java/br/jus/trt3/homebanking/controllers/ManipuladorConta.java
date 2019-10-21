@@ -47,10 +47,14 @@ public class ManipuladorConta implements Subject{
 	@Autowired
 	private MovimentacaoRepositorio movimentacaoRepositorio;
 	
+	@Autowired
+	private AppProperties appProperties;
+	
 	private List<Observador> observers = new ArrayList<Observador>();
 	
 	public ManipuladorConta() {
-		registerObserver(Coaf.getInstance());
+		Coaf coaf = Coaf.getInstance();
+		registerObserver(coaf);
 	}
 	
 
@@ -212,6 +216,7 @@ public class ManipuladorConta implements Subject{
 		
 		for(Observador observer : this.observers){
 			if(observer instanceof Coaf) {
+				((Coaf)observer).setAppProperties(appProperties);
 				if(valor > 50000 ) { // falta verificar se é depósito
 					observer.registraEvento(conta, valor, dataAtual, tipoOperacao);
 					

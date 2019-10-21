@@ -15,7 +15,7 @@ import br.jus.trt3.homebanking.models.TipoOperacao;
 import br.jus.trt3.homebanking.properties.AppProperties;
 
 public class Coaf implements Observador{
-	@Autowired
+	
 	private AppProperties appProperties;
 	
 	private Coaf(){}
@@ -27,6 +27,10 @@ public class Coaf implements Observador{
     public static Coaf getInstance(){
         return CoafHelper.INSTANCE;
     }	
+    
+    public void setAppProperties(AppProperties appProperties) {
+    	this.appProperties = appProperties;
+    }
 
     @Override
 	public void registraEvento(Conta conta, double valor, LocalDate data, TipoOperacao tipoOperacao) {
