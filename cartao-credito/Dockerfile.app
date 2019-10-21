@@ -1,4 +1,4 @@
-# Estagio 1 do Build - Compilar o projeto
+ # Estagio 1 do Build - Compilar o projeto
 FROM maven:base AS BUILD_BINARIO
 
 # Copiando o codigo de nossa maquina local para dentro do container
@@ -6,7 +6,7 @@ COPY ./ /home/codigo
 WORKDIR /home/codigo
 
 # Gerando o binario Java
-RUN mvn clean compile package
+RUN mvn clean compile package -DskipTests
 
 # Estagio 2 do Build - Gerar a imagem docker final
 FROM alpine-java:base

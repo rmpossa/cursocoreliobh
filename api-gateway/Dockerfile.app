@@ -6,7 +6,7 @@ COPY ./ /home/codigo
 WORKDIR /home/codigo
 
 # Gerando o binario Java
-RUN mvn clean compile package
+RUN mvn clean compile package -DskipTests
 
 # Estagio 2 do Build - Gerar a imagem docker final
 FROM alpine-java:base
