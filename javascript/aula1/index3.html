@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+</head>
+<body>
+    <ul id="listaTarefas">
+    </ul>
+    <script>
+        let checklist = [
+            {
+                descricao: "Conferir Estoque",
+                completo: true
+            },
+            {
+                descricao: "Contar Estoque",
+                completo: false
+            },
+            {
+                descricao: "Organizar Registros",
+                completo: true
+            },
+            {
+                descricao: "Prepara Mercadoria",
+                completo: true
+            },
+            {
+                descricao: "Conferência de Despacho",
+                completo: true
+            },
+            {
+                descricao: "Confirmação de Despacho",
+                completo: false
+            },
+            {
+                descricao: "Imprimir Ordens de Compra",
+                completo: false
+            },
+        ];
+        let criarLista = () => {
+            
+            let ulLista = document.getElementById("listaTarefas");
+            //Percorre o objeto JavaScript com nome checklist e adiciona um elemento LI para cada item.
+            for (let index = 0; index < checklist.length; index++) {
+                let elementoLi = document.createElement("li");
+                let inputCheck = document.createElement("input");
+                
+                inputCheck.type = "checkbox";
+                //crie um elemento do tipo span e adicione-o na variavel abaixo
+                let spanDescricao = document.createElement("span");
+                spanDescricao.textContent = checklist[index].descricao;
+                
+                //Complete o IF = Se a tarefa está completa
+                if (checklist[index].completo) {
+                    inputCheck.checked = true;
+                    spanDescricao.classList.add("completo");
+                }
+                //Adiciona os elemento ao LI
+                elementoLi.appendChild(inputCheck);
+                elementoLi.appendChild(spanDescricao);
+                
+                //TODO ver essa alteranativa: inputCheck.addEventListener("click", completarTarefa).bind(inputCheck)
+                inputCheck.onclick=function() {completarTarefa(inputCheck)};
+                
+                //Adiciona o LI ao UL
+                ulLista.appendChild(elementoLi);
+            }
+        }
+        let completarTarefa = (inputCheck) => {
+            let elemSpan = inputCheck.parentNode.getElementsByTagName("span")[0];
+            
+            elemSpan.classList.toggle("completo");
+            
+        };
+        window.onload = () => {
+            criarLista();
+        }
+    </script>
+    <style>
+        ul {
+            list-style-type: none;
+        }
+        .completo {
+            text-decoration: line-through;
+        }
+    </style>
+</body>
+</html>
