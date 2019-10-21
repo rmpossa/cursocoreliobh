@@ -38,8 +38,9 @@ public class Principal {
 
         // Enviando a requisição e recebendo o Objeto de resposta da mesma.
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-        
-        return response.headers().firstValue("location").get();
+//System.out.println(response.headers().firstValue("location").get());
+        return response.headers().firstValue("location").get().
+		replace("home-banking-server", "localhost").replace("coaf-server", "localhost").replace("cartao-credito-server","localhost");
 	}
 	
 	public static int criarAssociacao(String url, String objetoPai) throws IOException, InterruptedException {
