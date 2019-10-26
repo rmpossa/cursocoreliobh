@@ -31,6 +31,7 @@ public class Cliente {
 	
 	public static class ClienteBuilder {
 		
+		private Long id;
 		private String nome;
 		private String sobrenome;
 		private String endereco;
@@ -53,6 +54,11 @@ public class Cliente {
 			this.telefone = telefone;
 			return this;
 		}
+
+		public ClienteBuilder setId(Long id) {
+			this.id = id;
+			return this;
+		}
 		
 		public Cliente build() {
 			return new Cliente(this);
@@ -67,6 +73,7 @@ public class Cliente {
 	
 	
 	private Cliente(ClienteBuilder clienteBuilder) {
+		this.id = clienteBuilder.id;
 		this.nome = clienteBuilder.nome;
 		this.sobrenome = clienteBuilder.sobrenome;
 		this.endereco = clienteBuilder.endereco;
