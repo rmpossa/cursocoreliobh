@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, maximum-scale=1"
+    />
+    <meta charset="UTF-8" />
+    <title>Titulo de Navegação</title>
+    <link
+      href="https://fonts.googleapis.com/css?family=Press+Start+2P"
+      rel="stylesheet"
+    />
+    <style>
+      .dark-background {
+        background-color: black;
+      }
+    </style>
+  </head>
+
+  <body>
+    <label style="position: absolute; right:20px; top: 0px; z-index: 99">
+      <input type="checkbox" id="dark_mode_checkbox" class="nes-checkbox" />
+      <span>DarkMode</span>
+    </label>
+    <dialog class="nes-dialog" id="dialog-default">
+      <form method="dialog">
+        <div class="with-title is-centered">
+          <input
+            type="text"
+            id="tarefa_titulo_edicao"
+            class="nes-input"
+          /><br /><br />
+          <label>
+            <input
+              type="checkbox"
+              class="nes-checkbox"
+              id="tarefa_done_edicao"
+              checked
+            />
+            <span>Feita</span>
+          </label>
+        </div>
+        <menu class="dialog-menu">
+          <button class="nes-btn">Cancel</button>
+          <button class="nes-btn is-primary" id="confirmaEdicao">
+            Confirm
+          </button>
+        </menu>
+      </form>
+    </dialog>
+    <style></style>
+    <center>
+      <div style="align-content: center; width: 40%">
+        <div
+          class="nes-container with-title is-centered"
+          style="margin: 20px; z-index: 98"
+        >
+          <div class="nes-field">
+            <label for="tarefa_titulo">Titulo da Tarefa</label>
+            <input type="text" id="tarefa_titulo" class="nes-input" /><br />
+            <button type="button" id="adicionar" class="nes-btn is-primary">
+              Adicionar
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="nes-table-responsive">
+        <table class="nes-table is-bordered is-centered">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Titulo</th>
+              <th>Done</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="holder"></tbody>
+        </table>
+      </div>
+    </center>
+    <script src="./script.js"></script>
+  </body>
+</html>
