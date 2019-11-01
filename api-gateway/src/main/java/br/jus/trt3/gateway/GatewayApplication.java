@@ -28,10 +28,15 @@ public class GatewayApplication {
 
 	@Bean
 	public RouteLocator myRoutes(RouteLocatorBuilder builder) {
-		
+		System.out.println("property 1:" +  appProperties.getHostnameHomeBanking());
+		System.out.println("property 2 (port):" +  appProperties.getWithPort());
 		String urlHomeBanking = appProperties.getHostnameHomeBanking();
 		String urlCoaf = appProperties.getHostnameCoaf();
 		String urlCartaoCredito = appProperties.getHostnameCartaoCredito();
+		
+		String coafPort = appProperties.getWithPort() ? ":8082" : "";
+		String cartaoCreditoPort = appProperties.getWithPort() ? ":8083" : "";
+		String homeBankingPort = appProperties.getWithPort() ? ":8081" : "";
 		
 		return builder.routes()
 	            .route(p -> p
@@ -40,17 +45,17 @@ public class GatewayApplication {
 	                    	.hystrix(config -> config
 	                        .setName("mycmd2")
 	                        .setFallbackUri("forward:/fallback")))
-	                .uri("http://"+urlCoaf+":8082"))
-	            .route(p -> p
+	                .uri("http://"+urlCoaf+coafPort))
+	           .route(p -> p
 	            		.path("/cartaoCreditoes")
-	            		.uri("http://"+urlCartaoCredito+":8083"))
+	            		.uri("http://"+urlCartaoCredito+cartaoCreditoPort))
 	            		
 	            .route(p -> p
 	            		.path("/cartaoapp/*")
-	            		.uri("http://"+urlCartaoCredito+":8083"))
+	            		.uri("http://"+urlCartaoCredito+cartaoCreditoPort))
 	            .route(p -> p
-		                .path("/*")
-		                .uri("http://"+urlHomeBanking+":8081"))
+		                .path("/**")
+		                .uri("http://"+urlHomeBanking+homeBankingPort))
 	            .build();
 	}
 	

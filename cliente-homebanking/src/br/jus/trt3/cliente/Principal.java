@@ -7,20 +7,20 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
 public class Principal {
-	private static final String baseURL= "http://localhost:8080/";
+	private static final String baseURL= "http://api-gateway-homebanking.127.0.0.1.nip.io/";
 	
 	public static void executarOperacao(String operacao, String parametros) throws IOException, InterruptedException {
 	   HttpClient client = HttpClient.newHttpClient();
         
-		 // String no formato Json que irá conter o corpo da requisição POST
+		 // String no formato Json que irï¿½ conter o corpo da requisiï¿½ï¿½o POST
        
 
-       //Criando um HttpRequest do tipo Post, especificando sua URI e atribuindo ao método Post o corpo da requisição
+       //Criando um HttpRequest do tipo Post, especificando sua URI e atribuindo ao mï¿½todo Post o corpo da requisiï¿½ï¿½o
        HttpRequest request = HttpRequest.newBuilder()
                .GET()
                .uri(URI.create(baseURL + operacao+ "?" + parametros)).version(HttpClient.Version.HTTP_1_1).build();
 
-       // Enviando a requisição e recebendo o Objeto de resposta da mesma.
+       // Enviando a requisiï¿½ï¿½o e recebendo o Objeto de resposta da mesma.
        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
        
 	}
@@ -28,34 +28,37 @@ public class Principal {
 	public static String criarObjeto(String url, String json) throws IOException, InterruptedException {
 		HttpClient client = HttpClient.newHttpClient();
         
-		 // String no formato Json que irá conter o corpo da requisição POST
+		 // String no formato Json que irï¿½ conter o corpo da requisiï¿½ï¿½o POST
         String body = json;
 
-        //Criando um HttpRequest do tipo Post, especificando sua URI e atribuindo ao método Post o corpo da requisição
+        //Criando um HttpRequest do tipo Post, especificando sua URI e atribuindo ao mï¿½todo Post o corpo da requisiï¿½ï¿½o
         HttpRequest request = HttpRequest.newBuilder()
                 .POST(HttpRequest.BodyPublishers.ofString(body))
                 .uri(URI.create(url)).header("Content-Type", "application/json").version(HttpClient.Version.HTTP_1_1).build();
 
-        // Enviando a requisição e recebendo o Objeto de resposta da mesma.
+        // Enviando a requisiï¿½ï¿½o e recebendo o Objeto de resposta da mesma.
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-//System.out.println(response.headers().firstValue("location").get());
-        return response.headers().firstValue("location").get().
-		replace("home-banking-server", "localhost").replace("coaf-server", "localhost").replace("cartao-credito-server","localhost");
+
+        return response.headers().firstValue("location").get()
+        		// ExecuÃ§Ã£o com openshift
+        		.replace("homebanking-server:8081", "homebanking-server-homebanking.127.0.0.1.nip.io").replace("coaf:8082", "coaf-homebanking.127.0.0.1.nip.io").replace("cartao-credito:8083","cartao-credito-homebanking.127.0.0.1.nip.io")
+        		// ExecuÃ§Ã£o com docker
+        		.replace("home-banking-server", "localhost").replace("coaf-server", "localhost").replace("cartao-credito-server","localhost");
 	}
 	
 	public static int criarAssociacao(String url, String objetoPai) throws IOException, InterruptedException {
 		
 		HttpClient client = HttpClient.newHttpClient();
 		 
-       // String no formato Json que irá conter o corpo da requisição POST
+       // String no formato Json que irï¿½ conter o corpo da requisiï¿½ï¿½o POST
        String body = objetoPai; // "http://localhost:8080/libraries/1"
        
-       //Criando um HttpRequest do tipo PUT, especificando sua URI e atribuindo ao método PUT o corpo da requisição
+       //Criando um HttpRequest do tipo PUT, especificando sua URI e atribuindo ao mï¿½todo PUT o corpo da requisiï¿½ï¿½o
        HttpRequest request = HttpRequest.newBuilder()
                .PUT(HttpRequest.BodyPublishers.ofString(body))
                .uri(URI.create(url)).header("Content-Type", "text/uri-list").version(HttpClient.Version.HTTP_1_1).build();
 
-       // Enviando a requisição e recebendo o Objeto de resposta da mesma.
+       // Enviando a requisiï¿½ï¿½o e recebendo o Objeto de resposta da mesma.
        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
        
        return response.statusCode();
@@ -66,18 +69,18 @@ public class Principal {
 	public static void main(String[] args) {
 		try {
 			
-			String urlCliente1 = criarObjeto("http://localhost:8080/clientes", "{ \"nome\": \"Rodrigo\", \"sobrenome\": \"Possa\", \"telefone\": \"12323-0998\"}");
-			String urlCliente2 = criarObjeto("http://localhost:8080/clientes", "{ \"nome\": \"Tarcisio\", \"sobrenome\": \"Brandao\", \"endereco\": \"Av. A, N 1 - Serra\"}");
+			String urlCliente1 = criarObjeto(baseURL + "clientes", "{ \"nome\": \"Rodrigo\", \"sobrenome\": \"Possa\", \"telefone\": \"12323-0998\"}");
+			String urlCliente2 = criarObjeto(baseURL + "clientes", "{ \"nome\": \"Tarcisio\", \"sobrenome\": \"Brandao\", \"endereco\": \"Av. A, N 1 - Serra\"}");
 			
-			String urlConta1 = criarObjeto("http://localhost:8080/contaCorrentes", "{\"codigoConta\":\"1111-1\",\"saldo\": 1000.0, \"limiteCredito\": 1000.0}");
-			String urlConta2 = criarObjeto("http://localhost:8080/contaCorrentes", "{\"codigoConta\":\"2222-2\",\"saldo\": 800.0, \"limiteCredito\": 1000.0}");
+			String urlConta1 = criarObjeto(baseURL + "contaCorrentes", "{\"codigoConta\":\"1111-1\",\"saldo\": 1000.0, \"limiteCredito\": 1000.0}");
+			String urlConta2 = criarObjeto(baseURL + "contaCorrentes", "{\"codigoConta\":\"2222-2\",\"saldo\": 800.0, \"limiteCredito\": 1000.0}");
 			
 			
-			String urlConta3 = criarObjeto("http://localhost:8080/contaInvestimentoes", "{\"codigoConta\":\"3333-3\",\"saldo\": 12000.0}");
-			String urlConta4 = criarObjeto("http://localhost:8080/contaInvestimentoes", "{\"codigoConta\":\"4444-4\",\"saldo\": 20000.0}");
+			String urlConta3 = criarObjeto(baseURL + "contaInvestimentoes", "{\"codigoConta\":\"3333-3\",\"saldo\": 12000.0}");
+			String urlConta4 = criarObjeto(baseURL + "contaInvestimentoes", "{\"codigoConta\":\"4444-4\",\"saldo\": 20000.0}");
 			
-			String urlTipoAplicacao1 = criarObjeto("http://localhost:8080/poupancas", "{\"taxa\": 0.003}");
-			String urlTipoAplicacao2 = criarObjeto("http://localhost:8080/cDBs", "{\"taxa\": 0.01}, \"percentual\":1.0}");
+			String urlTipoAplicacao1 = criarObjeto(baseURL + "poupancas", "{\"taxa\": 0.003}");
+			String urlTipoAplicacao2 = criarObjeto(baseURL + "cDBs", "{\"taxa\": 0.01}, \"percentual\":1.0}");
 		
 			criarAssociacao(urlConta3 + "/contaInvestimentoTipoAplicacao", urlTipoAplicacao1);
 			criarAssociacao(urlConta4 + "/contaInvestimentoTipoAplicacao", urlTipoAplicacao2);
@@ -87,8 +90,8 @@ public class Principal {
 			criarAssociacao(urlConta3 + "/cliente", urlCliente1);
 			criarAssociacao(urlConta4 + "/cliente", urlCliente2);
 			
-			// Começa a usar o manipulador de contas ( é um controller do servidor que acessa os repositórios CRUD.
-			// Por ora ele está acessando somente o repositório de clientes.
+			// Comeï¿½a a usar o manipulador de contas ( ï¿½ um controller do servidor que acessa os repositï¿½rios CRUD.
+			// Por ora ele estï¿½ acessando somente o repositï¿½rio de clientes.
 			executarOperacao("registraSaldoInicial", "nomeCliente=Rodrigo");
 			executarOperacao("registraSaldoInicial", "nomeCliente=Tarcisio");
 			
@@ -108,7 +111,7 @@ public class Principal {
 			executarOperacao("sacar", "codigoConta=2222-2&valor=1000.0");
 			executarOperacao("resgatar", "codigoConta=4444-4&valor=20000.0");
 			
-			//TODO: realizar as operações do cartão de crédito
+			//TODO: realizar as operaï¿½ï¿½es do cartï¿½o de crï¿½dito
 			cargaCartaoCredito();
 			executarOperacao("cartaoapp/debitaCartao", "numeroCartao=1111.1111.1111.1111&valorDebitar=100.0");
 			
@@ -145,7 +148,7 @@ public class Principal {
 	}
 
 	private static void cargaCartaoCredito() throws IOException, InterruptedException {
-		String urlCartaoCredito1 = criarObjeto("http://localhost:8080/cartaoCreditoes", "{ \"limite\": \"1000.0\", \"saldo\": \"0.0\", \"codigoConta\": \"1111-1\", \"numeroCartao\": \"1111.1111.1111.1111\" }");
+		String urlCartaoCredito1 = criarObjeto(baseURL + "cartaoCreditoes", "{ \"limite\": \"1000.0\", \"saldo\": \"0.0\", \"codigoConta\": \"1111-1\", \"numeroCartao\": \"1111.1111.1111.1111\" }");
 	}		
 			
 			

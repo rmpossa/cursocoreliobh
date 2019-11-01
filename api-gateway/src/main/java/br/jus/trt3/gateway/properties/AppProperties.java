@@ -7,6 +7,7 @@ public class AppProperties {
 	private String hostnameHomeBanking;
 	private String hostnameCartaoCredito;
 	private String hostnameCoaf;
+	private Boolean withPort;
 
 	public String getHostnameHomeBanking() {
 		return hostnameHomeBanking;
@@ -30,5 +31,13 @@ public class AppProperties {
 
 	public void setHostnameCoaf(String hostnameCoaf) {
 		this.hostnameCoaf = hostnameCoaf;
+	}
+	
+	public Boolean getWithPort() {
+		return withPort;
+	}
+
+	public void setWithPort(Boolean withPort) {
+		this.withPort = withPort;
 	}
 }
