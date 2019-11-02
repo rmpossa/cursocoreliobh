@@ -3,7 +3,6 @@ package br.jus.trt3.homebanking.tests;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.BDDMockito.given;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -63,23 +62,13 @@ public class ClienteControllerTest {
 
     @Test
     public void getClientesOk() throws Exception {
-       	Cliente cliente1 = new Cliente.ClienteBuilder("Rodrigo","Possa")
-			.setId(1L)
-        	.setTelefone("12323-0998")
-        	.build();
-    	Cliente cliente2 = new Cliente.ClienteBuilder("Tarcisio","Brandao")
-			.setId(2L)
-        	.setEndereco("Av. A, N 1 - Serra")
-        	.build();
-       	List<Cliente> clientes = Arrays.asList(cliente1, cliente2);
-    	given(clienteController.recuperaTodosClientes()).willReturn(clientes);
-//    	given(clienteController.recuperaTodosClientes()).willReturn(adicionaClientes());
+    	given(clienteController.recuperaTodosClientes()).willReturn(adicionaClientes());
         mockMvc.perform(MockMvcRequestBuilders.get("/clienteController")
             .contentType(MediaType.APPLICATION_JSON_UTF8))
             .andExpect(MockMvcResultMatchers.status().isOk())
             .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON_UTF8))
-    		.andExpect(MockMvcResultMatchers.jsonPath("$.nome").value("Rodrigo"))
-//			.andExpect(MockMvcResultMatchers.jsonPath("$.nome").value("Tarcisio"))
+    		.andExpect(MockMvcResultMatchers.jsonPath("$[0].nome").value("Rodrigo"))
+			.andExpect(MockMvcResultMatchers.jsonPath("$[1].nome").value("Tarcisio"))
         	.andDo(MockMvcResultHandlers.print());
     }
     
@@ -96,6 +85,23 @@ public class ClienteControllerTest {
             .contentType(MediaType.APPLICATION_JSON_UTF8))
         	.andExpect(MockMvcResultMatchers.status().isCreated())
         	.andExpect(MockMvcResultMatchers.jsonPath("$.nome").value("Rodrigo"))
+            .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON_UTF8))
+            .andDo(MockMvcResultHandlers.print());
+    }
+    
+    @Test
+    public void postClienteFalha() throws Exception {
+        String strCliente = new ObjectMapper().writeValueAsString(
+    		new Cliente.ClienteBuilder("Rodrigo",null)
+    			.setId(1L)
+            	.setEndereco("Av. A, N 1 - Serra")
+            	.setTelefone("12323-0998")
+            	.build());
+        mockMvc.perform(MockMvcRequestBuilders.post("/clienteController")
+            .content(strCliente)
+            .contentType(MediaType.APPLICATION_JSON_UTF8))
+        	.andExpect(MockMvcResultMatchers.status().isBadRequest())
+//        	.andExpect(MockMvcResultMatchers.jsonPath("$.nome").value("Rodrigo"))
             .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON_UTF8))
             .andDo(MockMvcResultHandlers.print());
     }
