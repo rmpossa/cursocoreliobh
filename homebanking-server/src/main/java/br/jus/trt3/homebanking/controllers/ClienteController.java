@@ -30,6 +30,15 @@ public class ClienteController {
         return clienteRepositorio.findAll();
     }
 
+	@GetMapping(path="clienteController/{id}")
+    @ApiOperation(value="Recupera cliente por id.")
+    public ResponseEntity<Cliente> recuperaClientePorId(@PathVariable("id") Long id) {
+		String nomeOperacao = "recuperaClientePorId";
+        Cliente cliente = clienteRepositorio.findById(id)
+    		.orElseThrow(() -> new ClienteNaoEncontradoException(nomeOperacao,"id = " + id));
+        return new ResponseEntity<Cliente>(cliente, HttpStatus.OK);
+    }
+
     @PostMapping(path="clienteController")
     @ApiOperation(value="Cria um novo cliente.")
     public ResponseEntity<Cliente> criaCliente(@Valid @RequestBody Cliente cliente) {
@@ -37,40 +46,28 @@ public class ClienteController {
         return new ResponseEntity<Cliente>(cliente, HttpStatus.CREATED);
     }
 
-//    @PutMapping("/clienteController/{nomeCliente}")
-//    public Cliente atualizaCliente(@PathVariable String nomeCliente, 
-//    	@ApiParam(value="sobrenome do cliente") @RequestParam(value="sobrenome") String sobrenome,
-//    	@ApiParam(value="endereço do cliente") @RequestParam(value="endereco") String endereco,
-//    	@ApiParam(value="telefone do cliente") @RequestParam(value="telefone") String telefone) {
-//		String nomeOperacao = "atualizaCliente";
-//        return clienteRepositorio.findByNome(nomeCliente).map(cliente -> {
-//        	cliente.setSobrenome(sobrenome);
-//        	cliente.setEndereco(endereco);
-//        	cliente.setTelefone(telefone);
-//            return clienteRepositorio.save(cliente);
-//        }).orElseThrow(() -> new ClienteNaoEncontradoException(nomeOperacao,nomeCliente));
-//    }
-
     @PutMapping("/clienteController/{id}")
-    public ResponseEntity<Cliente> atualizaCliente(@PathVariable("id") long id, @Valid @RequestBody Cliente cliente) {
+    @ApiOperation(value="Altera cliente.")
+    public ResponseEntity<Cliente> atualizaCliente(@Valid @RequestBody Cliente cliente, @PathVariable("id") Long id) {
 		String nomeOperacao = "atualizaCliente";
         return clienteRepositorio.findById(id).map(c -> {
         	c.setSobrenome(cliente.getNome());
         	c.setSobrenome(cliente.getSobrenome());
         	c.setEndereco(cliente.getEndereco());
         	c.setTelefone(cliente.getTelefone());
-            return new ResponseEntity<Cliente>(clienteRepositorio.save(c), HttpStatus.OK);
+        	clienteRepositorio.save(c);
+            return new ResponseEntity<Cliente>(c, HttpStatus.OK);
         }).orElseThrow(() -> new ClienteNaoEncontradoException(nomeOperacao,cliente.getNome()));
         
     }
 
-    @DeleteMapping("/clienteController/{nomeCliente}")
-    public ResponseEntity<?> excluiCliente(@PathVariable String nomeCliente) {
+    @DeleteMapping("/clienteController/{id}")
+    public ResponseEntity<?> excluiCliente(@PathVariable("id") Long id) {
 		String nomeOperacao = "excluiCliente";
-        return clienteRepositorio.findByNome(nomeCliente).map(cliente -> {
+        return clienteRepositorio.findById(id).map(cliente -> {
         	clienteRepositorio.delete(cliente);
             return ResponseEntity.ok().build();
-        }).orElseThrow(() -> new ClienteNaoEncontradoException(nomeOperacao,nomeCliente));
+        }).orElseThrow(() -> new ClienteNaoEncontradoException(nomeOperacao,"id = " + id));
     }
 
 }
