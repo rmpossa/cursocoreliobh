@@ -1,4 +1,5 @@
 # executar os comandos abaixo, um por vez, na pasta do projeto homebanking-server
+cd homebanking-server
 docker build --tag=alpine-java:base --rm=true .
 docker build --file=Dockerfile.maven --tag=maven:base --rm=true .
 docker build --file=Dockerfile.app --tag=homebanking-server:latest --rm=true .

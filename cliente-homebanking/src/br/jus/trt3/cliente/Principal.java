@@ -7,7 +7,15 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
 public class Principal {
-	private static final String baseURL= "http://api-gateway-homebanking.127.0.0.1.nip.io/";
+	// ###### Execução via OPENSHIFT #####
+	//private static final String baseURLWithoutHttp= "api-gateway-homebanking.127.0.0.1.nip.io";
+	
+	// ###### Execução Local ou via Docker #####
+	private static final String baseURLWithoutHttp="localhost:8080";
+	
+	
+	private static final String baseURL= "http://" + baseURLWithoutHttp + "/";
+	
 	
 	public static void executarOperacao(String operacao, String parametros) throws IOException, InterruptedException {
 	   HttpClient client = HttpClient.newHttpClient();
@@ -40,10 +48,8 @@ public class Principal {
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
         return response.headers().firstValue("location").get()
-        		// Execução com openshift
-        		.replace("homebanking-server:8081", "homebanking-server-homebanking.127.0.0.1.nip.io").replace("coaf:8082", "coaf-homebanking.127.0.0.1.nip.io").replace("cartao-credito:8083","cartao-credito-homebanking.127.0.0.1.nip.io")
-        		// Execução com docker
-        		.replace("home-banking-server", "localhost").replace("coaf-server", "localhost").replace("cartao-credito-server","localhost");
+        		// preparação para executar localmente, no docker ou no openshift
+        		.replace("homebanking-server:8081", baseURLWithoutHttp).replace("coaf:8082", baseURLWithoutHttp).replace("cartao-credito:8083",baseURLWithoutHttp);
 	}
 	
 	public static int criarAssociacao(String url, String objetoPai) throws IOException, InterruptedException {

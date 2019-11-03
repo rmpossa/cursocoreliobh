@@ -1,6 +1,6 @@
 version: '2'
 services:
-  home-banking-server:
+  homebanking-server:
     container_name: HomeBankingServer
     image: homebanking-server:latest
     restart: "no"
@@ -10,7 +10,7 @@ services:
       - "8081"
     networks:
       - network-app
-  coaf-server:
+  coaf:
     container_name: CoafServer
     image: coaf:latest
     restart: "no"
@@ -20,7 +20,7 @@ services:
       - "8082"
     networks:
       - network-app      
-  cartao-credito-server:
+  cartao-credito:
     container_name: CartaoCreditoServer
     image: cartao-credito:latest
     restart: "no"
@@ -30,7 +30,7 @@ services:
       - "8083"      
     networks:
       - network-app      
-  api-gateway-server:
+  api-gateway:
     container_name: ApiGatewayServer
     image: api-gateway:latest
     restart: "no"

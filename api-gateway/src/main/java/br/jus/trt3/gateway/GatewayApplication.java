@@ -28,15 +28,13 @@ public class GatewayApplication {
 
 	@Bean
 	public RouteLocator myRoutes(RouteLocatorBuilder builder) {
-		System.out.println("property 1:" +  appProperties.getHostnameHomeBanking());
-		System.out.println("property 2 (port):" +  appProperties.getWithPort());
 		String urlHomeBanking = appProperties.getHostnameHomeBanking();
 		String urlCoaf = appProperties.getHostnameCoaf();
 		String urlCartaoCredito = appProperties.getHostnameCartaoCredito();
 		
-		String coafPort = appProperties.getWithPort() ? ":8082" : "";
-		String cartaoCreditoPort = appProperties.getWithPort() ? ":8083" : "";
-		String homeBankingPort = appProperties.getWithPort() ? ":8081" : "";
+		String coafPort = ":8082";
+		String cartaoCreditoPort = ":8083";
+		String homeBankingPort = ":8081";
 		
 		return builder.routes()
 	            .route(p -> p
@@ -51,7 +49,7 @@ public class GatewayApplication {
 	            		.uri("http://"+urlCartaoCredito+cartaoCreditoPort))
 	            		
 	            .route(p -> p
-	            		.path("/cartaoapp/*")
+	            		.path("/cartaoapp/**")
 	            		.uri("http://"+urlCartaoCredito+cartaoCreditoPort))
 	            .route(p -> p
 		                .path("/**")

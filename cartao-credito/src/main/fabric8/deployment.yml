@@ -9,4 +9,6 @@ spec:
         - env:
             - name: JAVA_OPTIONS
               value: "-Dspring.profiles.active=docker"
+          ports:
+            - containerPort: 8083
           

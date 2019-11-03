@@ -2,3 +2,11 @@ apiVersion: v1
 kind: Deployment
 metadata:
   name: ${project.artifactId}
+spec:
+  template:
+    spec:
+      containers:
+        - ports:
+            - containerPort: 8082
+          
+  
