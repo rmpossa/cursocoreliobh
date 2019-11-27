@@ -31,11 +31,7 @@ public class ContaCorrente extends Conta{
 
 	@Override
 	public void accept(AplicaTaxaMensalContaVisitor visitor) {
-		visitor.visit(this);
-		
+		visitor.visit(this);		
 	}
-	
-	
-	
 	
 }
