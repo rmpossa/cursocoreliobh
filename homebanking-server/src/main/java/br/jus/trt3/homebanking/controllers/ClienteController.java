@@ -51,7 +51,7 @@ public class ClienteController {
     public ResponseEntity<Cliente> atualizaCliente(@Valid @RequestBody Cliente cliente, @PathVariable("id") Long id) {
 		String nomeOperacao = "atualizaCliente";
         return clienteRepositorio.findById(id).map(c -> {
-        	c.setSobrenome(cliente.getNome());
+        	c.setNome(cliente.getNome());
         	c.setSobrenome(cliente.getSobrenome());
         	c.setEndereco(cliente.getEndereco());
         	c.setTelefone(cliente.getTelefone());
