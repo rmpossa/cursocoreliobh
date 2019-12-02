@@ -24,6 +24,11 @@ public class ContaCorrente extends Conta{
 		super(id, saldoInicial);
 		this.limiteCredito = limiteCredito;
 	}
+
+	public ContaCorrente(String codigoConta, Long id, double saldoInicial, double limiteCredito) {
+		super(codigoConta, id, saldoInicial);
+		this.limiteCredito = limiteCredito;
+	}
 	
 	public ContaCorrente() {
 		

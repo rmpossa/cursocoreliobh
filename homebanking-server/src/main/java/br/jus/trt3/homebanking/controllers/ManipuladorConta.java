@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -176,7 +177,7 @@ public class ManipuladorConta implements Subject{
 		
 		notifyObservers(contaOrigem, saldoContaOrigem - contaOrigem.getSaldo(), TipoOperacao.TRANSFERENCIA_ORIGEM);
 		notifyObservers(contaDestino, contaDestino.getSaldo() - saldoContaDestino, TipoOperacao.TRANSFERENCIA_DESTINO);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(Arrays.asList(contaOrigem,contaDestino), HttpStatus.OK);
 	}
 	
 //	@RequestMapping("/resgatar")

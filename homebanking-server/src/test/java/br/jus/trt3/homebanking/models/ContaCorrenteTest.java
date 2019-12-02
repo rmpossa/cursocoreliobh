@@ -35,5 +35,10 @@ public class ContaCorrenteTest {
 		assertTrue(contaDevedora.getSaldo() == -101);	
 	}
 	
+	@Test
+	public void deevTransferirValor() {
+		
+	}
+
 
 }

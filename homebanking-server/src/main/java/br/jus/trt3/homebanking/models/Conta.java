@@ -48,6 +48,12 @@ public abstract class Conta {
 		this.saldo = saldoInicial;
 	}
 	
+	public Conta(String codigoConta, Long id, double saldoInicial) {
+		this.codigoConta = codigoConta;
+		this.id = id;
+		this.saldo = saldoInicial;
+	}
+	
 	public Long getId() {
 		return id;
 	}
